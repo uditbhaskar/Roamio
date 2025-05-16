@@ -1,0 +1,32 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+
+# Additional recommended ignores
+*.log
+.idea/
+*.apk
+*.ap_
+*.keystore
+output.json
+# Android Studio 3.1+ .idea folder content
+/.idea/codeStyles/
+# NDK build folders
+obj/
+# IntelliJ
+out/
+# Mac system files
+Thumbs.db
+ehthumbs.db
