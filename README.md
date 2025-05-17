@@ -24,7 +24,7 @@
 - **Jetpack Compose:**  
   Modern, declarative UI toolkit for building responsive and beautiful interfaces, including custom layouts, animations, and theming.
 
-- **Architecture Components & MVVM:**  
+- **Clean Architecture with MVVM:**  
   Clean architecture with Model-View-ViewModel (MVVM) for a robust, testable, and maintainable codebase.
 
 - **Dependency Injection (Koin):**  
@@ -37,7 +37,7 @@
   Efficient network calls and monitoring for API integrations.
 
 - **Security:**  
-  Secure network communication (HTTPS/TLS), encrypted storage (Jetpack Security), and authentication (OAuth 2.0, JWT).
+  Secure network communication (HTTPS/TLS) and encrypted storage (Jetpack Security).
 
 - **Multi-Module Architecture:**  
   Modularized codebase for better feature segregation and scalability.
@@ -47,9 +47,6 @@
 
 - **CI/CD:**  
   Automated build, test, and deployment pipelines with GitHub Actions or GitLab CI.
-
-- **Accessibility & Internationalization:**  
-  Designed for inclusivity and global reach, supporting multiple languages and accessibility standards.
 
 - **Future Advanced Topics:**  
   Integration with custom sensors, real-time features via WebSockets, and experimentation with AI/ML models using ML Kit or TensorFlow Lite.
