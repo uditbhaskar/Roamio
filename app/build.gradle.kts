@@ -51,8 +51,10 @@ dependencies {
     implementation(libs.androidx.material3)
     //koin dependency injection
     implementation(libs.koin.android)
+    //compose navigation
+    implementation(libs.androidx.navigation.compose.android)
+    //Modules declaration
     implementation(project(":core"))
-
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

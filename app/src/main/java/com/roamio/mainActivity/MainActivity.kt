@@ -1,4 +1,4 @@
-package com.roamio
+package com.roamio.mainActivity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -14,6 +14,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.roamio.core.TestCore
 import com.roamio.ui.theme.RoamioTheme
 
+
+/**
+ * Main Activity for the Application
+ * @author udit
+ */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,10 +37,10 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Greeting(modifier: Modifier = Modifier, name: String = "") {
     Text(
-        text = "Hello $name!",
-        modifier = modifier
+        modifier = modifier,
+        text = "$name${TestCore.hello()}",
     )
 }
 
@@ -43,6 +48,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     RoamioTheme {
-        Greeting(TestCore.hello())
+        Greeting(name = TestCore.hello())
     }
 }
