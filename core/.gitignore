@@ -1,1 +1,51 @@
-/build
+# Gradle files
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local configuration file (sdk path, etc)
+local.properties
+
+# Log/OS files
+*.log
+*.swp
+.DS_Store
+
+# Android Studio/IntelliJ project files
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Keystore files
+*.jks
+*.keystore
+
+# Proguard
+proguard/
+
+# Generated files
+captures/
+output.json
+
+# NDK
+obj/
+.externalNativeBuild/
+
+# Misc
+*.class
+*.apk
+*.ap_
+*.dex
+
+# Crashlytics/Fabric
+crashlytics-build.properties
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# Google Services
+google-services.json
