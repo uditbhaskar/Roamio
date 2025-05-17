@@ -11,6 +11,7 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+//noinspection IncubatingAPI
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -20,5 +21,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Roamio"
-include(":app")
- 
+include(":app", ":core")

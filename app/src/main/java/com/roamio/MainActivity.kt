@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.roamio.core.TestCore
 import com.roamio.ui.theme.RoamioTheme
 
 class MainActivity : ComponentActivity() {
@@ -42,6 +43,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     RoamioTheme {
-        Greeting("Dhanno Sethu")
+        Greeting(TestCore.hello())
     }
 }
