@@ -49,6 +49,7 @@ dependencies {
     implementation(libs.androidx.material3)
     //koin dependency injection
     implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
     //compose navigation
     implementation(libs.androidx.navigation.compose.android)
     // Timber for logging
@@ -66,6 +67,7 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.timber)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

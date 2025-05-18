@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.roamio.feature.onboarding.ui.OnboardingScreen
+import com.roamio.feature.onboarding.ui.OnboardingScreenRoot
 import com.roamio.util.AppConstants
 
 /**
@@ -15,9 +15,7 @@ import com.roamio.util.AppConstants
 fun AppNavGraph(navController: NavHostController) {
     NavHost(navController, startDestination = AppConstants.NAV_ONBOARD) {
         composable(AppConstants.NAV_ONBOARD) {
-            OnboardingScreen(onContinue = {})
+            OnboardingScreenRoot(onNavigateNext = {})
         }
-        // Add other destinations, e.g.:
-        // composable("home") { HomeScreen() }
     }
 }

@@ -8,6 +8,6 @@ import org.koin.dsl.module
  * Koin module providing the OnboardingViewModel instance for DI.
  * @author udit
  */
-val vieModelModule = module {
+val viewModelModule = module {
     viewModelOf(::OnboardingViewModel)
 }
