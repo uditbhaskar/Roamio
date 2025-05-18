@@ -6,6 +6,6 @@ import org.koin.dsl.module
  * Koin module for providing app-level dependencies.
  * @author udit
  */
-val appModule = module {
+val appModules = module {
     // Define app-level singletons or factories here
 }

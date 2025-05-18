@@ -22,6 +22,7 @@ private const val TIME_OUT = 60000L
 private const val KTOR_LOGGER = "Ktor_Logger:"
 private const val HTTP_STATUS = "Http status::"
 private const val HTTP_EXCEPTION = "HTTP error: "
+private const val HTTP_STATUS_CODE_THRESHOLD = 300
 
 /**
  * Provides a pre-configured Ktor HttpClient for Android with JSON serialization,
@@ -82,7 +83,7 @@ object HttpClientProvider {
         HttpResponseValidator {
             validateResponse { response ->
                 val statusCode = response.status.value
-                if (statusCode < 300) return@validateResponse
+                if (statusCode < HTTP_STATUS_CODE_THRESHOLD) return@validateResponse
                 else throw Exception("$HTTP_EXCEPTION$statusCode")
             }
         }
