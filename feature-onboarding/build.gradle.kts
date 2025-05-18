@@ -1,21 +1,18 @@
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
 
 android {
-    namespace = "com.roamio"
+    namespace = "com.roamio.feature.onboarding"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.roamio"
         minSdk = 31
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -34,16 +31,15 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    buildFeatures {
+    buildFeatures{
         compose = true
-        buildConfig = true
     }
 }
 
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.appcompat)
     //compose
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
@@ -53,13 +49,24 @@ dependencies {
     implementation(libs.androidx.material3)
     //koin dependency injection
     implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
     //compose navigation
     implementation(libs.androidx.navigation.compose.android)
     // Timber for logging
     implementation(libs.timber)
     //Modules declaration
     implementation(project(":core"))
-    implementation(project(":feature-onboarding"))
+    //koin dependency injection
+    implementation(libs.koin.android)
+    // Ktor client and plugins
+    implementation(platform(libs.ktor.bom))
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.client.logging)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.timber)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

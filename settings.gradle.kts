@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Roamio"
-include(":app", ":core")
+include(":app", ":core", ":feature-onboarding")
