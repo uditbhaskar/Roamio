@@ -1,4 +1,4 @@
-package com.roamio.mainActivity
+package com.roamio.ui
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

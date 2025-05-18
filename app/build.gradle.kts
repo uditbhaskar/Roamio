@@ -36,6 +36,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -43,6 +44,7 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    //compose
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
@@ -53,6 +55,8 @@ dependencies {
     implementation(libs.koin.android)
     //compose navigation
     implementation(libs.androidx.navigation.compose.android)
+    // Timber for logging
+    implementation(libs.timber)
     //Modules declaration
     implementation(project(":core"))
     testImplementation(libs.junit)
