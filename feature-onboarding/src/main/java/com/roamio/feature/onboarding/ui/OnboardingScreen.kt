@@ -11,6 +11,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import com.roamio.feature.onboarding.viewModel.OnboardingAction
 import com.roamio.feature.onboarding.viewModel.OnboardingUiState
 import com.roamio.feature.onboarding.viewModel.OnboardingViewModel
@@ -48,8 +51,13 @@ fun OnboardingScreenContent(
 @Composable
 fun OnboardingScreenRoot(
     onNavigateNext: () -> Unit,
-    viewModel: OnboardingViewModel = koinViewModel()
+    navController: NavHostController
 ) {
+    val navBackStackEntry = navController.currentBackStackEntryAsState().value
+    val viewModel: OnboardingViewModel = navBackStackEntry?.let {
+        koinViewModel(viewModelStoreOwner = it)
+    } ?: koinViewModel()
+
     val uiState by viewModel.uiState.collectAsState()
     val navigateNext by viewModel.navigateNext.collectAsState()
 
