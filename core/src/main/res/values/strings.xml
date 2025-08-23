@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- API Logging Strings -->
+    <string name="api_logger_tag">🌐 API_LOGGER</string>
+    <string name="request_tag">🚀 REQUEST</string>
+    <string name="response_tag">📥 RESPONSE</string>
+    <string name="error_tag">❌ ERROR</string>
+    <string name="timing_tag">⏱️ TIMING</string>
+    
+    <!-- Logging Messages -->
+    <string name="log_request_format">═══════════════════════════════════════════════════════════════\n%s [%s] - ID: %s\n═══════════════════════════════════════════════════════════════\nMethod: %s\nURL: %s\n%s\n%s\n═══════════════════════════════════════════════════════════════</string>
+    <string name="log_response_format">═══════════════════════════════════════════════════════════════\n%s [%s] - ID: %s%s\n═══════════════════════════════════════════════════════════════\nStatus: %s %d - %s\n%s\n%s\n═══════════════════════════════════════════════════════════════</string>
+    <string name="log_error_format">═══════════════════════════════════════════════════════════════\n%s [%s] - ID: %s\n═══════════════════════════════════════════════════════════════\nURL: %s\nError: %s\nMessage: %s\nStack Trace:\n%s\n═══════════════════════════════════════════════════════════════</string>
+    <string name="log_timing_format">%s [%s] - ID: %s\nOperation: %s\nDuration: %s</string>
+    
+    <!-- Status Messages -->
+    <string name="status_ok">✅</string>
+    <string name="status_redirect">🔄</string>
+    <string name="status_client_error">⚠️</string>
+    <string name="status_server_error">💥</string>
+    <string name="status_unknown">❓</string>
+    
+    <!-- Format Labels -->
+    <string name="headers_label">Headers:</string>
+    <string name="headers_none">Headers: None</string>
+    <string name="request_body_label">Request Body</string>
+    <string name="response_body_label">Response Body</string>
+    <string name="body_none">None</string>
+    <string name="body_json_format">%s (JSON):</string>
+    <string name="body_raw_format">%s (Raw):</string>
+    <string name="body_format">%s:</string>
+    
+    <!-- Timing Format -->
+    <string name="duration_ms_format">%dms</string>
+    <string name="duration_seconds_format">%ds %dms</string>
+    <string name="duration_minutes_format">%dm %ds</string>
+    
+    <!-- Error Messages -->
+    <string name="http_error_format">HTTP error: %d</string>
+    <string name="unknown_url">unknown</string>
+    <string name="unknown_request_id">unknown</string>
+    
+    <!-- Request ID Format -->
+    <string name="request_id_format">req_%d_%d</string>
+</resources>

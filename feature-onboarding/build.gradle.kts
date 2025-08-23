@@ -6,13 +6,16 @@ plugins {
 
 android {
     namespace = "com.roamio.feature.onboarding"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 31
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+    }
+    
+    testOptions {
+        targetSdk = 36
     }
 
     buildTypes {
