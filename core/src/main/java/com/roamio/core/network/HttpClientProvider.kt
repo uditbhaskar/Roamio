@@ -1,13 +1,12 @@
 package com.roamio.core.network
 
+import com.roamio.core.constants.CoreConstants
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.android.Android
 import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.observer.ResponseObserver
 import io.ktor.client.request.header
@@ -16,17 +15,17 @@ import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import timber.log.Timber
-
-private const val TIME_OUT = 60000L
-private const val KTOR_LOGGER = "Ktor_Logger:"
-private const val HTTP_STATUS = "Http status::"
-private const val HTTP_EXCEPTION = "HTTP error: "
-private const val HTTP_STATUS_CODE_THRESHOLD = 300
 
 /**
- * Provides a pre-configured Ktor HttpClient for Android with JSON serialization,
- * logging, timeout, default headers, and response validation.
+ * Provides a pre-configured Ktor HttpClient for Android with enhanced JSON serialization,
+ * comprehensive logging, timeout, default headers, and response validation.
+ *
+ * Features:
+ * - JSON serialization with pretty print and lenient parsing
+ * - Request timeout configuration
+ * - Beautiful API logging with request/response details
+ * - Default Content-Type header as application/json
+ * - Response validation for non-successful HTTP responses
  *
  * @author udit
  */
@@ -34,19 +33,13 @@ private const val HTTP_STATUS_CODE_THRESHOLD = 300
 object HttpClientProvider {
 
     /**
-     * Creates and configures a Ktor HttpClient for Android with:
-     * - JSON serialization (pretty print, lenient, ignores unknown keys)
-     * - Request timeout
-     * - Full HTTP logging via Timber
-     * - Response status logging
-     * - Default Content-Type header as application/json
-     * - Throws exception for non-successful HTTP responses (status >= 300)
+     * Creates and configures a Ktor HttpClient for Android with comprehensive features.
      *
-     * @return Configured HttpClient instance
-     * @author udit
+     * @return Configured HttpClient instance ready for API calls
      */
     fun create(): HttpClient = HttpClient(Android) {
         expectSuccess = true
+        
         install(ContentNegotiation) {
             json(Json {
                 prettyPrint = true
@@ -56,25 +49,13 @@ object HttpClientProvider {
             })
         }
 
-
         install(HttpTimeout) {
-            requestTimeoutMillis = TIME_OUT
+            requestTimeoutMillis = CoreConstants.Network.REQUEST_TIMEOUT_MILLIS
         }
 
-        install(Logging) {
-            logger = object : Logger {
-                override fun log(message: String) {
-                    Timber.tag(KTOR_LOGGER).v(message)
-                }
-            }
-            level = LogLevel.ALL
-        }
-
-        install(ResponseObserver) {
-            onResponse { response ->
-                Timber.tag(HTTP_STATUS).d("${response.status.value}")
-            }
-        }
+        install(Logging, BeautifulLoggingConfig.createLoggingConfig())
+        
+        install(ResponseObserver, BeautifulLoggingConfig.createResponseObserverConfig())
 
         install(DefaultRequest) {
             header(HttpHeaders.ContentType, ContentType.Application.Json)
@@ -83,8 +64,10 @@ object HttpClientProvider {
         HttpResponseValidator {
             validateResponse { response ->
                 val statusCode = response.status.value
-                if (statusCode < HTTP_STATUS_CODE_THRESHOLD) return@validateResponse
-                else throw Exception("$HTTP_EXCEPTION$statusCode")
+                if (statusCode < CoreConstants.Network.HTTP_STATUS_CODE_THRESHOLD) return@validateResponse
+                else {
+                    throw Exception(String.format(CoreConstants.Network.HTTP_ERROR_MESSAGE, statusCode))
+                }
             }
         }
     }

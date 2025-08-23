@@ -5,13 +5,16 @@ plugins {
 
 android {
     namespace = "com.roamio.core"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 31
-        testOptions.targetSdk = 35
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+    }
+    
+    testOptions {
+        targetSdk = 36
     }
 
     buildTypes {

@@ -6,16 +6,19 @@ plugins {
 
 android {
     namespace = "com.roamio"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.roamio"
         minSdk = 31
-        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+    
+    lint {
+        targetSdk = 36
     }
 
     buildTypes {
