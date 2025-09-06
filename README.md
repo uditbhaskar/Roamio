@@ -2,7 +2,7 @@
 
 **Roamio** is a modern travel companion app designed to enhance your journeys with real-time weather updates, local attractions, restaurant recommendations, currency exchange rates, and more. Built with the latest Android technologies, Roamio aims to deliver a seamless, secure, and delightful user experience for travelers worldwide.
 
-## ✨ Features
+## Features
 
 - **Weather Information:**  
   Get current weather conditions and forecasts using the OpenWeatherMap API.
