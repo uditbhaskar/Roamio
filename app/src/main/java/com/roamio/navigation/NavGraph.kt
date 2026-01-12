@@ -15,7 +15,7 @@ import com.roamio.util.AppConstants
 fun AppNavGraph(navController: NavHostController) {
     NavHost(navController, startDestination = AppConstants.NAV_ONBOARD) {
         composable(AppConstants.NAV_ONBOARD) {
-            OnboardingScreenRoot(onNavigateNext = {})
+            OnboardingScreenRoot(onNavigateNext = {}, navController)
         }
     }
 }
