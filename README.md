@@ -24,8 +24,8 @@
 - **Jetpack Compose:**  
   Modern, declarative UI toolkit for building responsive and beautiful interfaces, including custom layouts, animations, and theming.
 
-- **Clean Architecture with MVVM:**  
-  Clean architecture with Model-View-ViewModel (MVVM) for a robust, testable, and maintainable codebase.
+- **Clean Architecture with MVI:**  
+  Clean architecture with Model-View-Intent (MVI) for a robust, testable, and maintainable codebase.
 
 - **Dependency Injection (Koin):**  
   Simplifies dependency management and testing.
