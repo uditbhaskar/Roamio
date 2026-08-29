@@ -38,6 +38,9 @@ Location is optional: if permission is denied, the app uses a default city (Lond
 
 ## API attributions
 
+- **Clean Architecture with MVI:**  
+  Clean architecture with Model-View-Intent (MVI) for a robust, testable, and maintainable codebase.
+
 Data sources used by this project (please respect their terms of use):
 
 | Feature | Source | License / notes |
