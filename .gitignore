@@ -1,32 +1,181 @@
-*.iml
-.gradle
-/local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
-.DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+# Gradle
+.gradle/
+build/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+gradle-app.setting
+.gradletasknamecache
 
-# Additional recommended ignores
-*.log
+# Local SDK / machine config
+local.properties
+local.defaults.properties
+
+# Android Studio / IntelliJ / Eclipse
 .idea/
-*.apk
-*.ap_
-*.keystore
-output.json
-# Android Studio 3.1+ .idea folder content
-/.idea/codeStyles/
-# NDK build folders
-obj/
-# IntelliJ
+*.iml
+*.ipr
+*.iws
+*.idea_modules/
+.classpath
+.project
+.settings/
+.metadata/
+captures/
+.navigation/
+navigation.xml
 out/
-# Mac system files
+bin/
+gen/
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.AppleDouble
+.LSOverride
 Thumbs.db
 ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Editors / temp / VCS leftovers
+.vscode/
+*.swp
+*.swo
+*~
+*.orig
+*.bak
+*.tmp
+*.log
+*.patch
+*.rej
+hs_err_pid*
+replay_pid*
+*.scc
+.svn/
+.hg/
+.cache/
+tmp/
+temp/
+node_modules/
+
+# Cursor / AI editor (never commit)
+.cursor/
+**/.cursor/
+.cursorrules
+.cursorignore
+.cursorindexingignore
+
+# Kotlin / compiler caches
+.kotlin/
+*.kotlin_module
+
+# Built artifacts
+*.apk
+*.apks
+*.aab
+*.ap_
+*.aapt2
+*.dex
+*.class
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
+output.json
+outputs/
+app/release/
+app/debug/
+*/release/*.apk
+*/debug/*.apk
+
+# Native libs from builds only; keep source jniLibs
+*.so
+!**/src/**/jniLibs/**/*.so
+
+# Signing / secrets
+*.jks
+*.keystore
+*.p12
+*.pem
+*.crt
+*.cer
+upload-keystore.jks
+debug.keystore
+keystore.properties
+key.properties
+secrets.properties
+signing.properties
+*.key
+*.secret
+.env
+.env.*
+!.env.example
+
+# Cloud / store credentials
+google-services.json
+agconnect-services.json
+play-service-account.json
+play-publishing.json
+api-keys.properties
+service-account.json
+*-service-account.json
+sentry.properties
+
+# Firebase / Crashlytics / Fabric
+.firebase/
+firebase-debug.log
+crashlytics-build.properties
+crashlytics.properties
+fabric.properties
+
+# Android generated / profiling / mapping
+.externalNativeBuild/
+.cxx/
+CMakeCache.txt
+CMakeFiles/
+obj/
+*.hprof
+*.trace
+mapping.txt
+mapping.zip
+seeds.txt
+usage.txt
+configuration.txt
+missing_rules.txt
+resources.txt
+r8-map*
+proguard_dump.txt
+
+# Lint / test / coverage reports
+lint/reports/
+lint-results*
+lint-results.xml
+lint-results.html
+/reports/
+test-results/
+jacoco.exec
+jacoco/
+coverage/
+*.exec
+*.ec
+
+# Detekt / ktlint / Sonar
+detekt/
+.ktlint/
+.scannerwork/
+.sonar/
+
+# Compose / benchmark reports
+compose_compiler_metrics/
+compose_reports/
+benchmark/build/
+macrobenchmark/build/
+outputs/androidTest-results/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+fastlane/readme.md
+vendor/bundle/
+.bundle/

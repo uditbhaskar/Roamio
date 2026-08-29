@@ -5,7 +5,8 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 /**
- * Koin module providing the OnboardingViewModel instance for DI.
+ * Koin module providing the [OnboardingViewModel] instance.
+ *
  * @author udit
  */
 val viewModelModule = module {

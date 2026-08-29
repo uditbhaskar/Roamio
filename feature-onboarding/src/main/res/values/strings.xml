@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="onboarding_page1_kicker">It\'s a Big World</string>
+    <string name="onboarding_page1_title_line1">Out There,</string>
+    <string name="onboarding_page1_title_line2">Go Explore</string>
+    <string name="onboarding_get_started">Get Started</string>
+    <string name="onboarding_privacy">Privacy Policy</string>
+    <string name="onboarding_page_indicator">Page %1$d of %2$d</string>
+    <string name="onboarding_cd_hero">Traveler looking out over mountains</string>
+</resources>

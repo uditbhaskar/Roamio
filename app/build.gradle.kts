@@ -11,19 +11,17 @@ android {
     defaultConfig {
         applicationId = "com.roamio"
         minSdk = 31
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-    
-    lint {
-        targetSdk = 36
-    }
 
     buildTypes {
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -36,6 +34,13 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        allWarningsAsErrors = true
+    }
+    lint {
+        warningsAsErrors = true
+        abortOnError = true
+        disable += "AndroidGradlePluginVersion"
+        disable += "GradleDependency"
     }
     buildFeatures {
         compose = true
@@ -54,6 +59,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.material.icons.extended)
     //koin dependency injection
     implementation(libs.koin.android)
     //compose navigation
@@ -63,11 +69,13 @@ dependencies {
     //Modules declaration
     implementation(project(":core"))
     implementation(project(":feature-onboarding"))
+    implementation(libs.koin.androidx.compose)
+    implementation(libs.lifecycle.runtime.compose)
 
     testImplementation(libs.junit)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)

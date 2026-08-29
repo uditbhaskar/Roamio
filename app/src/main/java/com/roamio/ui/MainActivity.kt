@@ -6,18 +6,23 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.navigation.compose.rememberNavController
 import com.roamio.navigation.AppNavGraph
+import com.roamio.ui.theme.RoamioTheme
 
 /**
- * Main Activity for the Application
+ * Single-activity host that sets up Compose navigation and theme.
+ *
  * @author udit
  */
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            val navController = rememberNavController()
-            AppNavGraph(navController = navController)
+            RoamioTheme {
+                val navController = rememberNavController()
+                AppNavGraph(navController = navController)
+            }
         }
     }
 }

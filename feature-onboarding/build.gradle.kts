@@ -33,6 +33,13 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        allWarningsAsErrors = true
+    }
+    lint {
+        warningsAsErrors = true
+        abortOnError = true
+        disable += "AndroidGradlePluginVersion"
+        disable += "GradleDependency"
     }
     buildFeatures{
         compose = true
@@ -43,43 +50,29 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    //compose
     implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    //koin dependency injection
+    implementation(libs.androidx.material.icons.extended)
     implementation(libs.koin.android)
     implementation(libs.koin.androidx.compose)
-    //compose navigation
     implementation(libs.androidx.navigation.compose.android)
-    // Timber for logging
+    implementation(libs.lifecycle.runtime.compose)
     implementation(libs.timber)
-    //Modules declaration
     implementation(project(":core"))
-    //koin dependency injection
-    implementation(libs.koin.android)
-    // Ktor client and plugins
-    implementation(platform(libs.ktor.bom))
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.serialization.kotlinx.json)
-    implementation(libs.ktor.client.logging)
-    implementation(libs.kotlinx.serialization.json)
-    implementation(libs.timber)
-    // Coroutines
     implementation(libs.coroutines.core)
     implementation(libs.coroutines.android)
     implementation(libs.viewmodel.ktx)
-    implementation(libs.coroutines.test)
 
     testImplementation(libs.junit)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.mockk)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)

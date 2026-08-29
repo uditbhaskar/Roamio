@@ -1,7 +1,8 @@
 package com.roamio.feature.onboarding.di
 
 /**
- * Aggregates all onboarding Koin modules for dependency injection.
+ * Aggregates all onboarding feature Koin modules.
+ *
  * @author udit
  */
 val onboardingModules = listOf(

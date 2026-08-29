@@ -4,6 +4,7 @@ import org.koin.dsl.module
 
 /**
  * Koin module for providing app-level dependencies.
+ *
  * @author udit
  */
 val appModules = module {

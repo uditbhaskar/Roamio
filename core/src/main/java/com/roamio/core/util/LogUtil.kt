@@ -3,7 +3,8 @@ package com.roamio.core.util
 import com.roamio.core.constants.CoreConstants
 import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 /**
  * Utility class for beautiful, consistent logging across the app.
@@ -111,26 +112,10 @@ object LogUtil {
         Timber.tag(CoreConstants.Logging.API_LOGGER_TAG).v("${CoreConstants.Logging.INFO_ICON}${CoreConstants.Logging.DOUBLE_SPACE}$message")
     }
     
-    /**
-     * Builds a formatted log message with separator and header.
-     *
-     * @param separator The separator line
-     * @param header The header text
-     * @param content The main content
-     * @return Formatted log message
-     * @author udit
-     */
     private fun buildLogMessage(separator: String = CoreConstants.Logging.LOG_SEPARATOR, header: String, content: String): String {
         return "$separator\n$header\n$separator\n$content\n$separator"
     }
     
-    /**
-     * Returns appropriate emoji for HTTP status codes.
-     *
-     * @param statusCode The HTTP status code
-     * @return Emoji string representing the status
-     * @author udit
-     */
     private fun getStatusEmoji(statusCode: Int): String {
         return when (statusCode) {
             in CoreConstants.Logging.STATUS_RANGE_OK_START..CoreConstants.Logging.STATUS_RANGE_OK_END -> CoreConstants.Logging.STATUS_OK_EMOJI
@@ -141,12 +126,6 @@ object LogUtil {
         }
     }
     
-    /**
-     * Generates a unique request identifier for tracking API calls.
-     *
-     * @return Unique request ID string
-     * @author udit
-     */
     private fun generateRequestId(): String {
         return String.format(
             Locale.US,

@@ -11,10 +11,12 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 
 /**
- * Application class for initializing Koin dependency injection on app startup.
+ * Application entry point that initializes logging and KOIN dependency injection.
+ *
  * @author udit
  */
-class RoamioApp : Application(){
+class RoamioApp : Application() {
+
     override fun onCreate() {
         super.onCreate()
         //Plant timber

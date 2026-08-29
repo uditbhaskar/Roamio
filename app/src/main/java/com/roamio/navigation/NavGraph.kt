@@ -8,14 +8,22 @@ import com.roamio.feature.onboarding.ui.OnboardingScreenRoot
 import com.roamio.util.AppConstants
 
 /**
- * Sets up the app's navigation graph with onboarding and home destinations.
+ * Root navigation graph. Only the first onboarding screen is wired while UI is rebuilt.
+ *
+ * @param navController Controller used to drive Compose navigation.
  * @author udit
  */
 @Composable
 fun AppNavGraph(navController: NavHostController) {
-    NavHost(navController, startDestination = AppConstants.NAV_ONBOARD) {
-        composable(AppConstants.NAV_ONBOARD) {
-            OnboardingScreenRoot(onNavigateNext = {}, navController)
+    NavHost(
+        navController = navController,
+        startDestination = AppConstants.Nav.ONBOARD,
+    ) {
+        composable(AppConstants.Nav.ONBOARD) {
+            OnboardingScreenRoot(
+                onNavigateNext = { },
+                navController = navController,
+            )
         }
     }
 }

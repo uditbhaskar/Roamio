@@ -1,12 +1,17 @@
 package com.roamio.util
 
 /**
- * App-wide constants.
- * Navigation route constants are grouped below.
+ * App-wide constants for navigation and shared configuration.
+ *
  * @author udit
  */
 object AppConstants {
-    //Navigation Routes
-    const val NAV_ONBOARD = "onboard"
-    const val NAV_HOME = "home"
+
+    /**
+     * Navigation route identifiers used by [com.roamio.navigation.AppNavGraph].
+     * @author udit
+     */
+    object Nav {
+        const val ONBOARD = "onboard"
+    }
 }

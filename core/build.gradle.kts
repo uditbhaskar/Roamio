@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -35,15 +36,20 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        allWarningsAsErrors = true
+    }
+    lint {
+        warningsAsErrors = true
+        abortOnError = true
+        disable += "AndroidGradlePluginVersion"
+        disable += "GradleDependency"
     }
 }
 
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    //koin dependency injection
     implementation(libs.koin.android)
-    // Ktor client and plugins
     implementation(platform(libs.ktor.bom))
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.android)
@@ -52,6 +58,9 @@ dependencies {
     implementation(libs.ktor.client.logging)
     implementation(libs.kotlinx.serialization.json)
     implementation(libs.timber)
+    implementation(libs.datastore.preferences)
+    implementation(libs.coroutines.core)
+    implementation(libs.coroutines.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

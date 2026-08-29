@@ -1,94 +1,60 @@
 # Roamio – Smart Travel Companion
 
-**Roamio** is a modern travel companion app designed to enhance your journeys with real-time weather updates, local attractions, restaurant recommendations, currency exchange rates, and more. Built with the latest Android technologies, Roamio aims to deliver a seamless, secure, and delightful user experience for travelers worldwide.
+**Roamio** is a travel companion Android app for weather, nearby attractions, restaurants, and currency conversion. Built with Kotlin, Jetpack Compose, multi-module Clean MVVM, Koin, and Ktor.
 
-## Features
+## Features (MVP)
 
-- **Weather Information:**  
-  Get current weather conditions and forecasts using the OpenWeatherMap API.
+- **Onboarding** – short intro, remembered via DataStore
+- **Weather** – current conditions + short forecast ([Open-Meteo](https://open-meteo.com/), free, no API key)
+- **Attractions** – nearby tourism POIs ([OpenStreetMap Overpass](https://wiki.openstreetmap.org/wiki/Overpass_API)) + optional Wikipedia summary
+- **Restaurants** – nearby restaurants via Overpass
+- **Currency** – convert amounts ([Frankfurter](https://www.frankfurter.app/), ECB rates)
 
-- **Local Attractions:**  
-  Discover nearby places of interest with integrated Wikipedia API data.
+Location is optional: if permission is denied, the app uses a default city (London).
 
-- **Restaurant Recommendations:**  
-  Find top-rated local restaurants and reviews via the Yelp API (or similar).
+## Modules
 
-- **Currency Exchange Rates:**  
-  Stay updated on currency exchange rates to manage your finances abroad.
+```
+:app                  Application shell, NavGraph, theme
+:core                 HttpClient, constants, location, preferences
+:feature-onboarding
+:feature-home         Bottom navigation + location UX
+:feature-weather
+:feature-attractions
+:feature-restaurants
+:feature-currency
+```
 
-## ️ Key Technologies
+## Getting started
 
-- **Kotlin:**  
-  Primary development language, leveraging coroutines for asynchronous programming and Flow for reactive streams.
+1. Clone the repository and open it in Android Studio.
+2. Sync Gradle (no API keys required).
+3. Run the `:app` configuration on a device or emulator (API 31+).
 
-- **Jetpack Compose:**  
-  Modern, declarative UI toolkit for building responsive and beautiful interfaces, including custom layouts, animations, and theming.
+```bash
+./gradlew :app:assembleDebug
+./gradlew test
+```
 
-- **Clean Architecture with MVVM:**  
-  Clean architecture with Model-View-ViewModel (MVVM) for a robust, testable, and maintainable codebase.
+## API attributions
 
-- **Dependency Injection (Koin):**  
-  Simplifies dependency management and testing.
+Data sources used by this project (please respect their terms of use):
 
-- **Room Database:**  
-  Local data storage with support for complex queries, migrations, and real-time UI updates via Flow and coroutines.
+| Feature | Source | License / notes |
+|---------|--------|-----------------|
+| Weather | [Open-Meteo](https://open-meteo.com/) | Free for non-commercial; attribution appreciated |
+| Places | [OpenStreetMap](https://www.openstreetmap.org/) / Overpass | ODbL – © OpenStreetMap contributors |
+| Summaries | [Wikipedia](https://www.mediawiki.org/wiki/API:Main_page) | CC BY-SA – User-Agent required |
+| Currency | [Frankfurter](https://www.frankfurter.app/) | Free ECB-based rates |
 
-- **Ktor & OkHttp:**  
-  Efficient network calls and monitoring for API integrations.
+## Architecture
 
-- **Security:**  
-  Secure network communication (HTTPS/TLS) and encrypted storage (Jetpack Security).
+- Multi-module: `app` / `core` / `feature-*`
+- UI: Compose Root/Content split, `StateFlow`, `handleAction`
+- DI: Koin
+- Network: single Ktor `HttpClient` in `:core`
+- No raw string literals for routes, URLs, or UI copy (constants + `strings.xml`)
 
-- **Multi-Module Architecture:**  
-  Modularized codebase for better feature segregation and scalability.
+## License
 
-- **Testing:**  
-  Comprehensive unit and UI tests using JUnit, Espresso, MockK, and TDD practices.
-
-- **CI/CD:**  
-  Automated build, test, and deployment pipelines with GitHub Actions or GitLab CI.
-
-- **Future Advanced Topics:**  
-  Integration with custom sensors, real-time features via WebSockets, and experimentation with AI/ML models using ML Kit or TensorFlow Lite.
-
-##  Roadmap
-
-1. **MVP Development**
-   - Weather, attractions, restaurants, and currency features
-   - Core UI with Jetpack Compose
-   - Basic MVVM architecture
-
-2. **Feature Expansion**
-   - Make it scalable
-   - Enhanced security
-   - Make it multi-module
-
-3. **Testing & Quality**
-   - Increase test coverage
-   - Implement CI/CD pipeline
-
-4. **Future Advanced Integrations**
-   - Real-time updates (WebSockets)
-   - AI/ML-powered recommendations
-
-6. **Release & Publishing**
-   - Optimize performance
-   - Prepare for Google Play Store launch
-
-##  Getting Started
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/yourusername/roamio.git
-   ```
-2. Open in Android Studio.
-3. Configure API keys for [OpenWeatherMap](https://openweathermap.org/api), [Wikipedia](https://www.mediawiki.org/wiki/API:Main_page), [Yelp](https://www.yelp.com/developers/documentation/v3), and your chosen currency API.
-4. Build and run the app on your device or emulator.
-
-##  Contributing
-
-Contributions are welcome! Please open issues or submit pull requests for new features, bug fixes, or improvements.
-
-##  License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License. See [LICENSE](LICENSE).

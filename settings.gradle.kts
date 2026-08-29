@@ -11,7 +11,9 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
-//noinspection IncubatingAPI
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -21,4 +23,8 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "Roamio"
-include(":app", ":core", ":feature-onboarding")
+include(
+    ":app",
+    ":core",
+    ":feature-onboarding",
+)

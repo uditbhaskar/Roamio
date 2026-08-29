@@ -10,8 +10,6 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.plugins.observer.ResponseObserver
 import io.ktor.client.request.header
-import io.ktor.http.ContentType
-import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
@@ -35,7 +33,8 @@ object HttpClientProvider {
     /**
      * Creates and configures a Ktor HttpClient for Android with comprehensive features.
      *
-     * @return Configured HttpClient instance ready for API calls
+     * @return Configured HttpClient instance ready for API calls.
+     * @author udit
      */
     fun create(): HttpClient = HttpClient(Android) {
         expectSuccess = true
@@ -51,6 +50,7 @@ object HttpClientProvider {
 
         install(HttpTimeout) {
             requestTimeoutMillis = CoreConstants.Network.REQUEST_TIMEOUT_MILLIS
+            connectTimeoutMillis = CoreConstants.Network.CONNECT_TIMEOUT_MILLIS
         }
 
         install(Logging, BeautifulLoggingConfig.createLoggingConfig())
@@ -58,16 +58,21 @@ object HttpClientProvider {
         install(ResponseObserver, BeautifulLoggingConfig.createResponseObserverConfig())
 
         install(DefaultRequest) {
-            header(HttpHeaders.ContentType, ContentType.Application.Json)
+            header(CoreConstants.Network.HEADER_USER_AGENT, CoreConstants.Network.USER_AGENT)
         }
 
         HttpResponseValidator {
             validateResponse { response ->
                 val statusCode = response.status.value
                 if (statusCode < CoreConstants.Network.HTTP_STATUS_CODE_THRESHOLD) return@validateResponse
-                else {
-                    throw Exception(String.format(CoreConstants.Network.HTTP_ERROR_MESSAGE, statusCode))
+                val message = when (statusCode) {
+                    CoreConstants.Network.HTTP_STATUS_BUSY,
+                    CoreConstants.Network.HTTP_STATUS_TOO_MANY_REQUESTS,
+                    CoreConstants.Network.HTTP_STATUS_GATEWAY_TIMEOUT,
+                    -> CoreConstants.Errors.SERVICE_BUSY
+                    else -> CoreConstants.Errors.NETWORK
                 }
+                throw Exception(message)
             }
         }
     }
