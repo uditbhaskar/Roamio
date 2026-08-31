@@ -16,9 +16,9 @@ class SelectedPlaceStore {
     var seededNearbyCafe: NearbyBite? = null
 
     /**
-     * Reads and clears the cafe section flag for the next detail load.
+     * Reads and clears the café section flag for the next detail load.
      *
-     * @return True when detail should fetch a nearby cafe card.
+     * @return True when detail should fetch a nearby café card.
      * @author udit
      */
     fun takeIncludeNearbyCafe(): Boolean {
@@ -40,9 +40,9 @@ class SelectedPlaceStore {
     }
 
     /**
-     * Reads and clears a cafe row prefetched on Home.
+     * Reads and clears a café row prefetched on Home.
      *
-     * @return Cached cafe bite when Home already resolved one.
+     * @return Cached café bite when Home already resolved one.
      * @author udit
      */
     fun takeSeededNearbyCafe(): NearbyBite? {

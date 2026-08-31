@@ -38,7 +38,7 @@ data class WikipediaPageDto(
 )
 
 /**
- * Wikipedia page coordinate from geosearch.
+ * Wikipedia page coordinate from geo search.
  *
  * @param lat Latitude in decimal degrees.
  * @param lon Longitude in decimal degrees.
@@ -51,7 +51,7 @@ data class WikipediaCoordinateDto(
 )
 
 /**
- * Commons / Wikipedia imageinfo URL pair.
+ * Commons / Wikipedia image info URL pair.
  *
  * @author udit
  */

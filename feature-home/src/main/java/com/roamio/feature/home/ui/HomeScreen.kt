@@ -334,7 +334,7 @@ private fun HomeCurrencyChip(
  * Glass weather pill shown on Home and reused visually on detail.
  *
  * @param temperatureC Celsius temperature, or null when unknown.
- * @param weatherCode Open-Meteo code used to pick sun or cloud.
+ * @param weatherCode `Open-Meteo` code used to pick sun or cloud.
  * @param useCelsius Whether to show Celsius.
  * @author udit
  */
@@ -406,7 +406,7 @@ private fun SearchPill(onClick: () -> Unit) {
 }
 
 /**
- * Cafe, Hiking, Kayaking, and Biking chips. Available chips lead; unavailable ones are greyed out at the end.
+ * Café, Hiking, Kayaking, and Biking chips. Available chips lead; unavailable ones are greyed out at the end.
  *
  * @param selected Currently active activity filter on Home.
  * @param loadedActivities Chips that resolved live data for the current city.

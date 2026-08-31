@@ -178,9 +178,9 @@ class WikipediaClient(
                 if (page.missing != null) return@mapNotNull null
                 val title = page.title.orEmpty()
                 if (!WikiTitles.isPlaceTitle(title)) return@mapNotNull null
-                val coord = page.coordinates.firstOrNull()
-                val lat = coord?.lat ?: latitude
-                val lon = coord?.lon ?: longitude
+                val cord = page.coordinates.firstOrNull()
+                val lat = cord?.lat ?: latitude
+                val lon = cord?.lon ?: longitude
                 val extract = page.extract.orEmpty().trim()
                 val image = page.thumbnail?.source?.let(PhotoUrls::display)
                 if (extract.isEmpty() && image.isNullOrBlank()) return@mapNotNull null
@@ -198,13 +198,13 @@ class WikipediaClient(
     }
 
     /**
-     * Wikivoyage travel extract for a city or region.
+     * Wiki voyage travel extract for a city or region.
      *
      * @param title City or region page title.
-     * @return Travel summary when Wikivoyage has that page.
+     * @return Travel summary when Wiki voyage has that page.
      * @author udit
      */
-    suspend fun wikivoyageSummary(title: String): WikipediaSummary? {
+    suspend fun wikiVoyageSummary(title: String): WikipediaSummary? {
         return restSummaryOn(CoreConstants.Api.WIKIVOYAGE_BASE_URL, title)
     }
 
@@ -309,7 +309,9 @@ class WikipediaClient(
 
     private suspend fun restSummaryOn(baseUrl: String, title: String): WikipediaSummary? {
         return try {
-            val encoded = URLEncoder.encode(title, StandardCharsets.UTF_8.toString())
+            val encoded = withContext(Dispatchers.IO) {
+                URLEncoder.encode(title, StandardCharsets.UTF_8.toString())
+            }
                 .replace("+", "%20")
             val dto: WikipediaRestSummaryDto = httpClient.get(
                 baseUrl + CoreConstants.Api.WIKIPEDIA_REST_SUMMARY_PATH + encoded,
@@ -329,7 +331,7 @@ class WikipediaClient(
 
     private suspend fun pageByTitle(
         title: String,
-        exchars: String = CoreConstants.Api.WIKI_EXCHARS,
+        chars: String = CoreConstants.Api.WIKI_EXCHARS,
     ): WikipediaPageDto? = withContext(Dispatchers.IO) {
         val dto: WikipediaQueryDto = httpClient.get(
             CoreConstants.Api.WIKIPEDIA_BASE_URL + CoreConstants.Api.WIKIPEDIA_API_PATH,
@@ -338,7 +340,7 @@ class WikipediaClient(
             parameter(CoreConstants.Api.PARAM_FORMAT, CoreConstants.Api.WIKI_FORMAT_JSON)
             parameter(CoreConstants.Api.PARAM_PROP, CoreConstants.Api.WIKI_PROP_EXTRACTS_IMAGES)
             parameter(CoreConstants.Api.PARAM_EXPLAINTEXT, CoreConstants.Api.WIKI_EXPLAINTEXT)
-            parameter(CoreConstants.Api.PARAM_EXCHARS, exchars)
+            parameter(CoreConstants.Api.PARAM_EXCHARS, chars)
             parameter(CoreConstants.Api.PARAM_PIPROP, CoreConstants.Api.WIKI_PIPROP_THUMB)
             parameter(CoreConstants.Api.PARAM_PITHUMBSIZE, CoreConstants.Api.WIKI_THUMB_SIZE)
             parameter(CoreConstants.Api.PARAM_REDIRECTS, CoreConstants.Api.WIKI_REDIRECTS)

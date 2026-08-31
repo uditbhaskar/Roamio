@@ -18,7 +18,7 @@ class ExploreSession {
     private var pendingPhotoUrl: String? = null
 
     /**
-     * Recenters later Home loads on [location].
+     * `Recenters` later Home loads on [location].
      *
      * @param location Coordinates and country chosen by search or Popular.
      * @param photoUrl Wikipedia image already known for this city, if any.

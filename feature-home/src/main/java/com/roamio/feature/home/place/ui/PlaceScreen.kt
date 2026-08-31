@@ -666,7 +666,7 @@ private fun PlaceScreenContentLoadedPreview() {
                 weather = CurrentWeather(15.0, 0),
                 nearby = NearbyBite(
                     name = "Alpine Cafe",
-                    address = "Altstadt, Innsbruck",
+                    address = "Altadena, Innsbruck",
                     cuisine = "cafe",
                     walkMinutes = 8,
                     latitude = 47.2,

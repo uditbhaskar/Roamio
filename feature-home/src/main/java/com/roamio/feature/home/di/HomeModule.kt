@@ -15,7 +15,7 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 /**
- * Koin bindings for the post-onboarding explore app.
+ * KOIN bindings for the post-onboarding explore app.
  *
  * @author udit
  */

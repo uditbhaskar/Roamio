@@ -25,6 +25,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Loads detail extras for the selected place.
@@ -33,7 +34,7 @@ import kotlinx.coroutines.withTimeoutOrNull
  * @param wikipediaClient Extract and page image.
  * @param weatherClient Weather overlay and elevation fallback.
  * @param placesClient Nearby food.
- * @param placeNameResolver Nominatim cafe fallback.
+ * @param placeNameResolver Nominatim café fallback.
  * @param photoResolver Hero image.
  * @param appPreferences Saved-star persistence.
  * @author udit
@@ -164,7 +165,7 @@ class PlaceRepository(
     }
 
     private suspend fun loadNearbyCafe(latitude: Double, longitude: Double): NearbyBite? {
-        val bite = withTimeoutOrNull(CoreConstants.Api.PLACE_FOOD_TIMEOUT_MILLIS) {
+        val bite = withTimeoutOrNull(CoreConstants.Api.PLACE_FOOD_TIMEOUT_MILLIS.milliseconds) {
             placesClient.nearbyFood(latitude, longitude)
         }.orEmpty().firstOrNull()
             ?: runCatching {
@@ -211,7 +212,7 @@ class PlaceRepository(
         activity: ActivityKind,
     ): String {
         WikiText.detailBody(wiki?.extract.orEmpty()).takeIf { it.isNotBlank() }?.let { return it }
-        val voyage = runCatching { wikipediaClient.wikivoyageSummary(city) }.getOrNull()
+        val voyage = runCatching { wikipediaClient.wikiVoyageSummary(city) }.getOrNull()
         WikiText.detailBody(voyage?.extract.orEmpty()).takeIf { it.isNotBlank() }?.let { return it }
         return SeedCities.genericBlurb(activity)
     }
@@ -246,7 +247,7 @@ class PlaceRepository(
  *
  * @param place Enriched place.
  * @param weather Current weather at the place.
- * @param nearby Nearest cafe or restaurant.
+ * @param nearby Nearest café or restaurant.
  * @param isSaved Whether the star is filled.
  * @author udit
  */

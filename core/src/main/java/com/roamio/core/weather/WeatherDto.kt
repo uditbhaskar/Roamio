@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
- * Open-Meteo forecast payload used for the weather chip.
+ * `Open-Meteo` forecast payload used for the weather chip.
  *
  * @author udit
  */
@@ -14,7 +14,7 @@ data class OpenMeteoForecastDto(
 )
 
 /**
- * Current conditions from Open-Meteo.
+ * Current conditions from `Open-Meteo`.
  *
  * @author udit
  */
@@ -25,7 +25,7 @@ data class OpenMeteoCurrentDto(
 )
 
 /**
- * Open-Meteo elevation payload.
+ * `Open-Meteo` elevation payload.
  *
  * @author udit
  */
@@ -38,7 +38,7 @@ data class OpenMeteoElevationDto(
  * Current temperature and WMO weather code.
  *
  * @param temperatureC Temperature in Celsius.
- * @param weatherCode Open-Meteo weather code.
+ * @param weatherCode `Open-Meteo` weather code.
  * @author udit
  */
 data class CurrentWeather(

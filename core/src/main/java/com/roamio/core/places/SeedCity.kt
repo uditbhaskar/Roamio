@@ -80,7 +80,7 @@ object SeedCities {
     }
 
     /**
-     * Named trail, water, ride, or cafe near [cityName] for [activity].
+     * Named trail, water, ride, or café near [cityName] for [activity].
      *
      * @param cityName Headline or catalog city.
      * @param activity Active Home chip.

@@ -1,7 +1,7 @@
 package com.roamio.core.places
 
 /**
- * Nearest cafe or restaurant shown in the detail hotel-card slot.
+ * Nearest café or restaurant shown in the detail hotel-card slot.
  *
  * @param name Venue name.
  * @param address Street or city line.
@@ -9,7 +9,7 @@ package com.roamio.core.places
  * @param walkMinutes Estimated walk from the place.
  * @param latitude Venue latitude.
  * @param longitude Venue longitude.
- * @param photoUrl Resolved venue or cafe image.
+ * @param photoUrl Resolved venue or café image.
  * @author udit
  */
 data class NearbyBite(

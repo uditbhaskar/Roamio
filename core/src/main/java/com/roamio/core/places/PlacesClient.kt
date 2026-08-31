@@ -57,7 +57,7 @@ class PlacesClient(
     }
 
     /**
-     * Nearby restaurants and cafes for the detail card.
+     * Nearby restaurants and cafés for the detail card.
      *
      * @param latitude Place latitude.
      * @param longitude Place longitude.

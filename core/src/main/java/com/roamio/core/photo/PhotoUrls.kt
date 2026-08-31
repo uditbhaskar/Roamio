@@ -18,7 +18,7 @@ object PhotoUrls {
      * @author udit
      */
     fun display(url: String): String {
-        return sized(normalizeCommonsPath(url), CoreConstants.Api.PHOTO_DISPLAY_PX)
+        return sized(normalizeCommonsPath(url))
     }
 
     private fun normalizeCommonsPath(url: String): String {
@@ -43,7 +43,7 @@ object PhotoUrls {
         return original?.source?.let { display(it) }
     }
 
-    private fun sized(url: String, px: Int): String {
+    private fun sized(url: String, px: Int = CoreConstants.Api.PHOTO_DISPLAY_PX): String {
         return CoreConstants.Api.WIKI_THUMB_PX_REGEX.toRegex().replace(url) { match ->
             val current = match.groupValues.getOrNull(1)?.toIntOrNull() ?: return@replace match.value
             if (current >= px) match.value else "/${px}px-"

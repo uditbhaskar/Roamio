@@ -7,8 +7,8 @@ import kotlin.math.abs
 /**
  * Converts a cafe [ExplorePlace] into the detail card model.
  *
- * @receiver Cafe row resolved on Home.
- * @return Nearby cafe card payload.
+ * @receiver Café row resolved on Home.
+ * @return Nearby café card payload.
  * @author udit
  */
 internal fun ExplorePlace.toNearbyBite(): NearbyBite {

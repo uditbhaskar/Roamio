@@ -135,7 +135,7 @@ class PlaceViewModel(
  * @param errorMessage User-facing error, when any.
  * @param place Selected place.
  * @param weather Current weather.
- * @param nearby Nearest cafe card when the place is not cafe-first.
+ * @param nearby Nearest café card when the place is not café-first.
  * @param isSaved Star state.
  * @param detailFocus Chip section that could not resolve live data.
  * @param focusUnavailable True when [detailFocus] had no nearby match.

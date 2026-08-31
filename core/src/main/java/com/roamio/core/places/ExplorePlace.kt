@@ -9,7 +9,7 @@ package com.roamio.core.places
  * @param latitude Latitude in decimal degrees.
  * @param longitude Longitude in decimal degrees.
  * @param activity Activity chip that produced this place.
- * @param elevationMeters Elevation when OSM or Open-Meteo provides it.
+ * @param elevationMeters Elevation when OSM or `Open-Meteo` provides it.
  * @param distanceKm Distance from the active search point.
  * @param blurb Short Wikipedia extract.
  * @param photoUrl Remote image, or null to show the sage fallback.

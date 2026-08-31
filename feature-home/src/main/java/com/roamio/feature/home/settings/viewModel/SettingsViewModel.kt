@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val NAME_SAVE_DEBOUNCE_MS = 450L
 private const val SAVED_HINT_VISIBLE_MS = 2_000L
@@ -69,7 +70,7 @@ class SettingsViewModel(
         nameDraft.value = value
         nameSaveJob?.cancel()
         nameSaveJob = viewModelScope.launch {
-            delay(NAME_SAVE_DEBOUNCE_MS)
+            delay(NAME_SAVE_DEBOUNCE_MS.milliseconds)
             appPreferences.setDisplayName(value)
             nameDraft.value = null
             flashSavedHint()
@@ -87,7 +88,7 @@ class SettingsViewModel(
         savedHintJob?.cancel()
         savedHintJob = viewModelScope.launch {
             showSavedHint.value = true
-            delay(SAVED_HINT_VISIBLE_MS)
+            delay(SAVED_HINT_VISIBLE_MS.milliseconds)
             showSavedHint.value = false
         }
     }

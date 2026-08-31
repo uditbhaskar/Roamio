@@ -20,7 +20,7 @@ import kotlinx.coroutines.coroutineScope
  * Loads bundled Popular catalog cities with optional live weather.
  *
  * @param locationProvider User point used for the Nearby filter.
- * @param weatherClient Open-Meteo per city.
+ * @param weatherClient `Open-Meteo` per city.
  * @param exploreSession Recenter target when a city is opened.
  * @author udit
  */
@@ -75,7 +75,7 @@ class PopularRepository(
     }
 
     /**
-     * Recenters Home on a bundled catalog [city].
+     * `Recenters` Home on a bundled catalog [city].
      *
      * @param city Selected catalog city.
      * @param photoUrl Catalog hero image already shown on the card.
@@ -115,7 +115,7 @@ data class PopularSnapshot(
  *
  * @param city Seed city.
  * @param temperatureC Current temperature.
- * @param weatherCode Open-Meteo code.
+ * @param weatherCode `Open-Meteo` code.
  * @param photoUrl Catalog Commons image for the card.
  * @param distanceKm Distance from the user.
  * @author udit

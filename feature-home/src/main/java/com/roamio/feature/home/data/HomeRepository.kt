@@ -27,13 +27,14 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withTimeoutOrNull
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Loads Home weather, location, and the featured activity place.
  *
  * @param locationProvider Device or fallback coordinates.
  * @param placeNameResolver Reverse geocode and city search.
- * @param weatherClient Open-Meteo current conditions.
+ * @param weatherClient `Open-Meteo` current conditions.
  * @param wikipediaClient Place extract, image, and activity search.
  * @param placesClient Nearby hiking, water, and ride stops.
  * @param photoResolver Activity-aware card image.
@@ -128,7 +129,7 @@ class HomeRepository(
     }
 
     /**
-     * Recenters later loads on [hit].
+     * `Recenters` later loads on [hit].
      *
      * @param hit Selected search result.
      * @param photoUrl Optional hero image for the chosen city.
@@ -321,7 +322,7 @@ class HomeRepository(
                 location = location,
             )
         }
-        val bite = withTimeoutOrNull(CoreConstants.Api.PLACE_FOOD_TIMEOUT_MILLIS) {
+        val bite = withTimeoutOrNull(CoreConstants.Api.PLACE_FOOD_TIMEOUT_MILLIS.milliseconds) {
             placesClient.nearbyFood(location.latitude, location.longitude)
         }.orEmpty().firstOrNull()
             ?: runCatching {
@@ -376,7 +377,7 @@ class HomeRepository(
                 location = location,
             )
         }
-        val osm = withTimeoutOrNull(CoreConstants.Api.HOME_NEARBY_TIMEOUT_MILLIS) {
+        val osm = withTimeoutOrNull(CoreConstants.Api.HOME_NEARBY_TIMEOUT_MILLIS.milliseconds) {
             runCatching {
                 placesClient.nearbyActivities(activity, location.latitude, location.longitude)
             }.getOrDefault(emptyList())
@@ -441,7 +442,7 @@ class HomeRepository(
             ?: runCatching { wikipediaClient.searchSummary("${seed.name} $city") }.getOrNull())
             ?.takeIf { WikiTitles.summaryFits(it, seed.name, city) }
         val voyage = if (wiki?.extract.isNullOrBlank()) {
-            runCatching { wikipediaClient.wikivoyageSummary(city) }.getOrNull()
+            runCatching { wikipediaClient.wikiVoyageSummary(city) }.getOrNull()
         } else {
             null
         }
@@ -602,7 +603,7 @@ class HomeRepository(
  * @param location Active search point.
  * @param weather Current conditions, when available.
  * @param loadedActivities Chips that resolved live data for the city.
- * @param cafePlace Nearby cafe when OpenStreetMap returned one.
+ * @param cafePlace Nearby café when OpenStreetMap returned one.
  * @param displayName Greeting name from settings.
  * @param useCelsius Temperature unit flag.
  * @author udit

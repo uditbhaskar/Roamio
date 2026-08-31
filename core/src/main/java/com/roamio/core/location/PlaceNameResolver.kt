@@ -16,7 +16,7 @@ import kotlinx.coroutines.withContext
 import java.util.Locale
 
 /**
- * Turns coordinates into a city name using the device geocoder, then Nominatim.
+ * Turns coordinates into a city name using the device Geocoder, then Nominatim.
  *
  * @param context Application context for [Geocoder].
  * @param httpClient Shared Ktor client for the Nominatim fallback.
@@ -83,11 +83,11 @@ class PlaceNameResolver(
     }
 
     /**
-     * Finds cafes near a coordinate when Overpass has no food results.
+     * Finds cafés near a coordinate when Overpass has no food results.
      *
      * @param latitude Search latitude.
      * @param longitude Search longitude.
-     * @return Named cafes with walk minutes, empty when none.
+     * @return Named cafés with walk minutes, empty when none.
      * @author udit
      */
     suspend fun searchCafes(latitude: Double, longitude: Double): List<NearbyBite> {

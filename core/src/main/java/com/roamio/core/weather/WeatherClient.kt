@@ -7,7 +7,7 @@ import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 
 /**
- * Reads current weather and elevation from Open-Meteo.
+ * Reads current weather and elevation from `Open-Meteo`.
  *
  * @param httpClient Shared Ktor client from core.
  * @author udit

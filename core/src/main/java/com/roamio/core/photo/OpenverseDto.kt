@@ -3,7 +3,7 @@ package com.roamio.core.photo
 import kotlinx.serialization.Serializable
 
 /**
- * Openverse image search envelope.
+ * Open verse image search envelope.
  *
  * @author udit
  */

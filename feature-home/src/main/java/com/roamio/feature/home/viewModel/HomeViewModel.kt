@@ -435,8 +435,8 @@ class HomeViewModel(
  * @param countryCode ISO country code.
  * @param countryName Country label under the flag.
  * @param headlineCity City used as the first headline word.
- * @param temperature Celsius from Open-Meteo.
- * @param weatherCode Open-Meteo weather code.
+ * @param temperature Celsius from `Open-Meteo`.
+ * @param weatherCode `Open-Meteo` weather code.
  * @param useCelsius Unit flag.
  * @param homeCurrency Default currency from Settings.
  * @param selectedActivity Active chip, or the place itself.

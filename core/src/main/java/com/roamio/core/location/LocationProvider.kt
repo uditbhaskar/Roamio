@@ -15,6 +15,7 @@ import com.roamio.core.util.LogUtil
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.coroutines.resume
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Resolves device location or returns a configured fallback city, with a place name.
@@ -50,7 +51,7 @@ class LocationProvider(
                 isFallback = false,
             )
         }
-        val updated = withTimeoutOrNull(CoreConstants.Location.LOCATION_TIMEOUT_MILLIS) {
+        val updated = withTimeoutOrNull(CoreConstants.Location.LOCATION_TIMEOUT_MILLIS.milliseconds) {
             requestSingleUpdate()
         }
         return if (updated != null) {
