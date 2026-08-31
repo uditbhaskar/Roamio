@@ -27,4 +27,5 @@ include(
     ":app",
     ":core",
     ":feature-onboarding",
+    ":feature-home",
 )

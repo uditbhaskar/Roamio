@@ -18,6 +18,7 @@ kotlinx-coroutines = "1.10.2"
 datastore = "1.1.4"
 lifecycleCompose = "2.10.0"
 mockk = "1.13.13"
+coil = "2.7.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -54,6 +55,7 @@ viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx"
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleCompose" }
 datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
 mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }

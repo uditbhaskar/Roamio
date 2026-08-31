@@ -4,11 +4,10 @@ import android.graphics.Typeface
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,7 +32,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Brush
@@ -47,8 +45,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextMeasurer
@@ -94,30 +90,31 @@ private val OnboardingTightText = TextStyle(
  */
 @Composable
 fun OnboardingScreenContent(
-    state: OnboardingUiState,
+    @Suppress("UNUSED_PARAMETER") state: OnboardingUiState,
     onAction: (OnboardingAction) -> Unit,
 ) {
     OnboardingExplorePage(
-        pageCount = state.pageCount,
         onGetStarted = { onAction(OnboardingAction.CONTINUE) },
+        onPrivacyClick = { onAction(OnboardingAction.OPEN_PRIVACY) },
     )
 }
 
+/**
+ * First onboarding page: hero, cropped headline, Dive in, and privacy.
+ *
+ * @param onGetStarted Completes onboarding and opens Home.
+ * @param onPrivacyClick Opens the privacy policy screen.
+ * @author udit
+ */
 @Composable
 private fun OnboardingExplorePage(
-    pageCount: Int,
     onGetStarted: () -> Unit,
+    onPrivacyClick: () -> Unit,
 ) {
     val teal = colorResource(R.color.onboarding_explore_teal)
     val ink = colorResource(R.color.onboarding_explore_ink)
     val onTeal = colorResource(R.color.onboarding_explore_on_teal)
     val privacy = colorResource(R.color.onboarding_explore_privacy)
-    val dot = colorResource(R.color.onboarding_explore_dot)
-    val pageDescription = stringResource(
-        R.string.onboarding_page_indicator,
-        1,
-        pageCount,
-    )
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
             painter = painterResource(R.drawable.onboarding_page1_hero),
@@ -146,14 +143,6 @@ private fun OnboardingExplorePage(
                 .navigationBarsPadding()
                 .padding(horizontal = 24.dp, vertical = 16.dp),
         ) {
-            OnboardingPageDots(
-                pageCount = pageCount,
-                selectedColor = teal,
-                unselectedColor = dot,
-                pageDescription = pageDescription,
-                modifier = Modifier.padding(top = 4.dp),
-            )
-            Spacer(modifier = Modifier.height(16.dp))
             OnboardingHeadlineLockup(
                 kicker = stringResource(R.string.onboarding_page1_kicker),
                 firstLine = stringResource(R.string.onboarding_page1_title_line1),
@@ -200,12 +189,22 @@ private fun OnboardingExplorePage(
                 color = privacy,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(top = 16.dp, bottom = 8.dp),
+                    .padding(top = 16.dp, bottom = 8.dp)
+                    .clickable(onClick = onPrivacyClick),
             )
         }
     }
 }
 
+/**
+ * Kicker plus two ExtraBold lines with the camera lockup on Explore.
+ *
+ * @param kicker Small line above the title.
+ * @param firstLine First ExtraBold title line.
+ * @param secondLine Second ExtraBold title line.
+ * @param color Title ink color.
+ * @author udit
+ */
 @Composable
 private fun OnboardingHeadlineLockup(
     kicker: String,
@@ -440,6 +439,14 @@ private fun TextLayoutResult.paintInk(
     )
 }
 
+/**
+ * Draws one headline line cropped to ink bounds so font padding is gone.
+ *
+ * @param layout Measured text layout for the line.
+ * @param ink Tight ink rectangle from the native paint.
+ * @param color Fill color for the glyphs.
+ * @author udit
+ */
 @Composable
 private fun CroppedHeadlineLine(
     layout: TextLayoutResult,
@@ -489,42 +496,18 @@ private fun cameraNeckStrapPath(
     }
 }
 
-@Composable
-private fun OnboardingPageDots(
-    pageCount: Int,
-    selectedColor: Color,
-    unselectedColor: Color,
-    pageDescription: String,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier.semantics { contentDescription = pageDescription },
-        horizontalArrangement = Arrangement.Start,
-    ) {
-        repeat(pageCount) { index ->
-            val selected = index == 0
-            Box(
-                modifier = Modifier
-                    .padding(end = 6.dp)
-                    .height(8.dp)
-                    .width(if (selected) 28.dp else 8.dp)
-                    .clip(CircleShape)
-                    .background(if (selected) selectedColor else unselectedColor),
-            )
-        }
-    }
-}
-
 /**
  * Root composable that binds [OnboardingViewModel] and handles navigation.
  *
  * @param onNavigateNext Called when onboarding completes.
+ * @param onOpenPrivacy Opens the privacy policy route.
  * @param navController Navigation controller for scoped ViewModel ownership.
  * @author udit
  */
 @Composable
 fun OnboardingScreenRoot(
     onNavigateNext: () -> Unit,
+    onOpenPrivacy: () -> Unit,
     navController: NavHostController,
 ) {
     val navBackStackEntry = navController.currentBackStackEntryAsState().value
@@ -544,7 +527,12 @@ fun OnboardingScreenRoot(
 
     OnboardingScreenContent(
         state = uiState,
-        onAction = viewModel::handleAction,
+        onAction = { action ->
+            when (action) {
+                OnboardingAction.OPEN_PRIVACY -> onOpenPrivacy()
+                else -> viewModel.handleAction(action)
+            }
+        },
     )
 }
 

@@ -3,6 +3,7 @@ package com.roamio.core.location
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+
 /**
  * Nominatim reverse-geocode JSON payload.
  *
@@ -10,6 +11,19 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class NominatimReverseDto(
+    val address: NominatimAddressDto? = null,
+)
+
+/**
+ * One Nominatim forward-search hit.
+ *
+ * @author udit
+ */
+@Serializable
+data class NominatimSearchDto(
+    val lat: String? = null,
+    val lon: String? = null,
+    @SerialName("display_name") val displayName: String? = null,
     val address: NominatimAddressDto? = null,
 )
 

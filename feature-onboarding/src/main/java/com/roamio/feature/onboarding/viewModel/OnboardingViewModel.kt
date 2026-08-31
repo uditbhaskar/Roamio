@@ -2,7 +2,7 @@ package com.roamio.feature.onboarding.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.roamio.core.preferences.OnboardingPreferences
+import com.roamio.core.preferences.AppPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -10,11 +10,11 @@ import kotlinx.coroutines.launch
 /**
  * ViewModel for managing onboarding persistence and navigation.
  *
- * @param onboardingPreferences Preferences store for onboarding completion.
+ * @param appPreferences Preferences store for onboarding completion.
  * @author udit
  */
 class OnboardingViewModel(
-    private val onboardingPreferences: OnboardingPreferences,
+    private val appPreferences: AppPreferences,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(OnboardingUiState())
 
@@ -33,6 +33,7 @@ class OnboardingViewModel(
     fun handleAction(action: OnboardingAction) {
         when (action) {
             OnboardingAction.CONTINUE -> completeOnboarding()
+            OnboardingAction.OPEN_PRIVACY -> Unit
         }
     }
 
@@ -47,7 +48,7 @@ class OnboardingViewModel(
 
     private fun completeOnboarding() {
         viewModelScope.launch {
-            onboardingPreferences.setOnboardingCompleted(true)
+            appPreferences.setOnboardingCompleted(true)
             _navigateNext.value = true
         }
     }
@@ -58,9 +59,7 @@ class OnboardingViewModel(
  *
  * @author udit
  */
-data class OnboardingUiState(
-    val pageCount: Int = 3,
-)
+class OnboardingUiState
 
 /**
  * User actions available on the onboarding screen.
@@ -69,4 +68,5 @@ data class OnboardingUiState(
  */
 enum class OnboardingAction {
     CONTINUE,
+    OPEN_PRIVACY,
 }

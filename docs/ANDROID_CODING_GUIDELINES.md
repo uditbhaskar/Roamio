@@ -7,15 +7,19 @@ Standards for this multi-module Compose project.
 ## Structure
 
 ```
-app/          → Application, MainActivity, NavGraph, theme, AppConstants, app DI
-core/         → HttpClient, CoreConstants, preferences, location, network
-feature-*/    → di/, ui/, viewModel/ (+ data/ for repositories) — depends on core only
+app/                 → Application, MainActivity, NavGraph, theme, AppConstants, app DI
+core/                → HttpClient, CoreConstants, preferences, location, network
+feature-onboarding/  → First-run only (isolated from the main app)
+feature-home/        → The whole post-onboarding app: Home, Popular, Place, Saved, Convert, Settings
 ```
+
+Add a Gradle module only when the code is independently shipped or gated (onboarding).
+Do not create a `feature-*` module per screen or tab.
 
 ## Hard rules
 
 - No raw string literals: routes → `AppConstants`, network/errors → `CoreConstants`, UI → `strings.xml`.
-- No feature-to-feature dependencies; wire feature UIs in `:app`.
+- Features depend on `:core` only. Wire feature UIs in `:app`.
 - Screens: `*ScreenRoot` + `*ScreenContent`.
 - Every `*ScreenContent` and reusable Compose UI must have `@Preview` functions for loaded, loading, and error (or empty) states. Preview `*ScreenContent`, never `*ScreenRoot`.
 - ViewModels: `StateFlow`, `handleAction`, navigation flags with `resetNavigation` where needed.
@@ -102,7 +106,7 @@ class WeatherViewModel(private val weatherRepository: WeatherRepository) : ViewM
      * @param action The user action to process.
      * @author udit
      */
-    fun handleAction(action: WeatherAction) { ... }
+    fun handleAction(action: WeatherAction) { /* ... */ }
 }
 
 // BAD — do not do this
@@ -112,5 +116,5 @@ val uiState: StateFlow<WeatherUiState> = _uiState
 /** @property temperature Current temp. */
 data class WeatherUiState(val temperature: Double?)
 
-override fun onLocationChanged(location: Location) { ... }  // no KDoc
+override fun onLocationChanged(location: Location) { /* ... */ }  // no KDoc
 ```

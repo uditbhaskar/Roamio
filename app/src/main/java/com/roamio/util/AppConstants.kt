@@ -13,5 +13,8 @@ object AppConstants {
      */
     object Nav {
         const val ONBOARD = "onboard"
+        const val MAIN = "main"
+        const val PLACE = "place"
+        const val PRIVACY = "privacy"
     }
 }

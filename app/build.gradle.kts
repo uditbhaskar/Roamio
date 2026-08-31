@@ -1,8 +1,18 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
 }
+
+val localProps = Properties().apply {
+    val localFile = rootProject.file("local.properties")
+    if (localFile.exists()) {
+        localFile.inputStream().use { load(it) }
+    }
+}
+val pexelsApiKey = localProps.getProperty("PEXELS_API_KEY", "").replace("\"", "")
 
 android {
     namespace = "com.roamio"
@@ -16,6 +26,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "PEXELS_API_KEY", "\"$pexelsApiKey\"")
     }
 
     buildTypes {
@@ -37,6 +48,7 @@ android {
         allWarningsAsErrors = true
     }
     lint {
+        lintConfig = file("lint.xml")
         warningsAsErrors = true
         abortOnError = true
         disable += "AndroidGradlePluginVersion"
@@ -52,9 +64,10 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    val composeBom = platform(libs.androidx.compose.bom)
     //compose
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
+    implementation(composeBom)
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
@@ -69,11 +82,13 @@ dependencies {
     //Modules declaration
     implementation(project(":core"))
     implementation(project(":feature-onboarding"))
+    implementation(project(":feature-home"))
     implementation(libs.koin.androidx.compose)
     implementation(libs.lifecycle.runtime.compose)
+    implementation(libs.coil.compose)
 
     testImplementation(libs.junit)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(composeBom)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.ui.test.junit4)

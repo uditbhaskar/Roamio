@@ -3,8 +3,19 @@
     <string name="onboarding_page1_kicker">It\'s a Big World</string>
     <string name="onboarding_page1_title_line1">Out There,</string>
     <string name="onboarding_page1_title_line2">Go Explore</string>
-    <string name="onboarding_get_started">Get Started</string>
+    <string name="onboarding_get_started">Dive in</string>
     <string name="onboarding_privacy">Privacy Policy</string>
-    <string name="onboarding_page_indicator">Page %1$d of %2$d</string>
     <string name="onboarding_cd_hero">Traveler looking out over mountains</string>
+
+    <string name="privacy_title">Privacy Policy</string>
+    <string name="privacy_cd_back">Back to onboarding</string>
+    <string name="privacy_updated">Last updated August 2026</string>
+    <string name="privacy_section_collect_title">What we collect</string>
+    <string name="privacy_section_collect_body">Roamio stores your display name, temperature unit, home currency, and places you star on this device. With your permission, we use your location to show nearby destinations and weather.</string>
+    <string name="privacy_section_use_title">How we use it</string>
+    <string name="privacy_section_use_body">Saved settings personalize Home, Convert, and place detail. Location is used only to load explore content for your area. We do not sell your data.</string>
+    <string name="privacy_section_third_party_title">Third-party services</string>
+    <string name="privacy_section_third_party_body">Roamio loads public travel data from services such as OpenStreetMap, Wikipedia, Open-Meteo, and Frankfurter. Those requests may include coordinates or place names needed to show content. Their own policies apply when data leaves the app.</string>
+    <string name="privacy_section_choices_title">Your choices</string>
+    <string name="privacy_section_choices_body">You can change your name, units, and currency in Settings. Deny location permission and Roamio will use a default city until you search for another place. Delete starred places from Saved at any time.</string>
 </resources>

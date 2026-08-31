@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="roamio_sage">#E8F4EA</color>
+    <color name="roamio_cream">#F3F4E6</color>
+    <color name="roamio_forest">#0A1A0C</color>
+    <color name="roamio_mint">#D2F07A</color>
+    <color name="roamio_star">#FCE34D</color>
+    <color name="roamio_sun">#F5C518</color>
+    <color name="roamio_ink">#111111</color>
+    <color name="roamio_white">#FFFFFF</color>
+    <color name="roamio_chip">#FCFFFD</color>
+    <color name="roamio_muted">#5C6B5E</color>
+    <color name="roamio_delete">#B3261E</color>
+</resources>

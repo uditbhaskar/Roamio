@@ -1,6 +1,6 @@
 package com.roamio.feature.onboarding.viewModel
 
-import com.roamio.core.preferences.OnboardingPreferences
+import com.roamio.core.preferences.AppPreferences
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -24,7 +24,7 @@ import org.junit.Test
 class OnboardingViewModelTest {
 
     private val dispatcher = UnconfinedTestDispatcher()
-    private val preferences: OnboardingPreferences = mockk(relaxed = true)
+    private val preferences: AppPreferences = mockk(relaxed = true)
     private lateinit var viewModel: OnboardingViewModel
 
     /**

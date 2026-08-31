@@ -5,7 +5,6 @@
     <color name="onboarding_explore_kicker">#434242</color>
     <color name="onboarding_explore_on_teal">#FFFFFF</color>
     <color name="onboarding_explore_privacy">#F5F5F5</color>
-    <color name="onboarding_explore_dot">#661A1A1A</color>
     <color name="onboarding_explore_strap">#E6B423</color>
     <color name="onboarding_explore_scrim">#99000000</color>
 </resources>

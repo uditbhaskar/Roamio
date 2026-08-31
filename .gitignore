@@ -171,6 +171,12 @@ benchmark/build/
 macrobenchmark/build/
 outputs/androidTest-results/
 
+# Local developer overrides
+*.local
+
+# Lint intermediate cache
+.lint/
+
 # Fastlane
 fastlane/report.xml
 fastlane/Preview.html

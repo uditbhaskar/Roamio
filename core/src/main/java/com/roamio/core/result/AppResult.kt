@@ -21,7 +21,10 @@ sealed class AppResult<out T> {
      *
      * @author udit
      */
-    data class Error(val message: String, val cause: Throwable? = null) : AppResult<Nothing>()
+    data class Error(
+        val message: String,
+        @Suppress("unused") val cause: Throwable? = null,
+    ) : AppResult<Nothing>()
 }
 
 /**

@@ -48,9 +48,9 @@ class OverpassGateway(
 
     private companion object {
         val endpoints = listOf(
+            CoreConstants.Api.OVERPASS_FALLBACK_BASE_URL_KUMI,
             CoreConstants.Api.OVERPASS_BASE_URL,
             CoreConstants.Api.OVERPASS_FALLBACK_BASE_URL,
-            CoreConstants.Api.OVERPASS_FALLBACK_BASE_URL_ALT,
         )
     }
 }

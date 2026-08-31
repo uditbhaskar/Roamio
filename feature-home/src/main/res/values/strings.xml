@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_greeting">Hi, %1$s 👋</string>
+    <string name="home_default_name">there</string>
+    <string name="home_weather">Weather %1$d °C</string>
+    <string name="home_weather_f">Weather %1$d °F</string>
+    <string name="home_weather_unavailable">Weather</string>
+    <string name="home_currency_chip">%1$s</string>
+    <string name="home_activity_hiking">Hiking</string>
+    <string name="home_activity_kayaking">Kayaking</string>
+    <string name="home_activity_biking">Biking</string>
+    <string name="home_activity_popular">Popular</string>
+    <string name="home_activity_cafe">Cafe</string>
+    <string name="home_headline_popular">Popular</string>
+    <string name="home_headline_cafe">Cafe</string>
+    <string name="home_headline_explore">Explore</string>
+    <string name="home_headline_trails">Trails</string>
+    <string name="home_headline_waters">Waters</string>
+    <string name="home_headline_rides">Rides</string>
+    <string name="home_start_trip">Start Trip</string>
+    <string name="home_search_cd">Search places</string>
+    <string name="home_search_hint">Search a city</string>
+    <string name="home_search_close">Close search</string>
+    <string name="home_retry">Try again</string>
+    <string name="home_cd_featured">Featured place</string>
+    <string name="home_distance_km">%1$s km</string>
+    <string name="home_meta_open">Open</string>
+
+    <string name="popular_title">Popular</string>
+    <string name="popular_cd_more">More</string>
+    <string name="popular_cd_saved">Saved</string>
+    <string name="popular_cd_open">Open destination</string>
+    <string name="popular_filter_nearby">Nearby</string>
+    <string name="popular_filter_clear">Clear skies</string>
+    <string name="popular_empty">No destinations to show.</string>
+    <string name="popular_retry">Try again</string>
+    <string name="popular_weather">%1$d°</string>
+    <string name="popular_distance_km">%1$s km</string>
+    <string name="popular_cd_next">Next destination</string>
+
+    <string name="place_cd_back">Back</string>
+    <string name="place_cd_save">Save place</string>
+    <string name="place_elevation_m">%1$sm</string>
+    <string name="place_distance_km">%1$s km</string>
+    <string name="place_walk_min">%1$d min</string>
+    <string name="place_attribution">Photo: %1$s</string>
+    <string name="place_retry">Try again</string>
+    <string name="place_weather">Weather %1$d °C</string>
+    <string name="place_missing">This place is no longer available.</string>
+    <string name="place_activity_popular">Popular</string>
+    <string name="place_activity_cafe">Cafe</string>
+    <string name="place_activity_explore">Place</string>
+    <string name="place_activity_hiking">Hiking</string>
+    <string name="place_activity_kayaking">Kayaking</string>
+    <string name="place_activity_biking">Biking</string>
+    <string name="place_no_cafe">No nearby cafe found for this area.</string>
+    <string name="place_no_activity">No live %1$s spots found nearby.</string>
+
+    <string name="saved_title">Saved</string>
+    <string name="saved_empty">Star a place to see it here.</string>
+    <string name="saved_cd_open">Open saved place</string>
+    <string name="saved_cd_delete">Delete saved place</string>
+    <string name="saved_delete">Delete</string>
+
+    <string name="currency_title">Convert</string>
+    <string name="currency_amount">Amount</string>
+    <string name="currency_from">From</string>
+    <string name="currency_to">To</string>
+    <string name="currency_result">%1$s %2$s</string>
+    <string name="currency_retry">Try again</string>
+    <string name="currency_convert">Convert</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_name">Display name</string>
+    <string name="settings_name_hint">Your name</string>
+    <string name="settings_units">Temperature</string>
+    <string name="settings_celsius">°C</string>
+    <string name="settings_fahrenheit">°F</string>
+    <string name="settings_currency">Home currency</string>
+    <string name="settings_saved">Saved</string>
+</resources>

@@ -92,7 +92,7 @@ class LocationProvider(
         longitude: Double,
         isFallback: Boolean,
     ): GeoLocation {
-        val resolved = placeNameResolver.resolve(latitude, longitude)
+        val resolved = runCatching { placeNameResolver.resolve(latitude, longitude) }.getOrNull()
         val fallbackName = if (isFallback) {
             CoreConstants.Location.FALLBACK_CITY_NAME
         } else {
@@ -102,8 +102,8 @@ class LocationProvider(
             latitude = latitude,
             longitude = longitude,
             isFallback = isFallback,
-            placeName = resolved.placeName.ifBlank { fallbackName },
-            countryCode = resolved.countryCode,
+            placeName = resolved?.placeName.orEmpty().ifBlank { fallbackName },
+            countryCode = resolved?.countryCode.orEmpty(),
         )
     }
 

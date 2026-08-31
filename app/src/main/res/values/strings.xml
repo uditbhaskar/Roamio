@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Roamio</string>
+    <string name="dock_home">Home</string>
+    <string name="dock_popular">Popular</string>
+    <string name="dock_saved">Saved</string>
+    <string name="dock_convert">Convert</string>
+    <string name="dock_settings">Settings</string>
 </resources>

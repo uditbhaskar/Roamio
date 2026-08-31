@@ -2,12 +2,11 @@ package com.roamio.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-val Canvas = Color(0xFFF7F7F7)
+val Sage = Color(0xFFE8F4EA)
+val Cream = Color(0xFFF3F4E6)
+val Forest = Color(0xFF0A1A0C)
+val Mint = Color(0xFFD2F07A)
+val StarYellow = Color(0xFFFCE34D)
+val Ink = Color(0xFF111111)
 val Paper = Color(0xFFFFFFFF)
-val Ink = Color(0xFF222222)
-val InkMuted = Color(0xFF6A6A6A)
-val Hairline = Color(0xFFDDDDDD)
-val Teal = Color(0xFF2BB8A8)
-val Night = Color(0xFF121212)
-val NightSurface = Color(0xFF1E1E1E)
-val NightMuted = Color(0xFFB3B3B3)
+val Muted = Color(0xFF5C6B5E)
