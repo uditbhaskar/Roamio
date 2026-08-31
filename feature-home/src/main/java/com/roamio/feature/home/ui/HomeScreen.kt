@@ -155,7 +155,7 @@ fun HomeScreenContent(
  * @author udit
  */
 private val HomeUiState.showsFullSkeleton: Boolean
-    get() = isLoading || (featured == null && errorMessage == null)
+    get() = isLoading || isRefreshing || (featured == null && errorMessage == null)
 
 @Composable
 private fun ColumnScope.HomeLoadedContent(
@@ -498,10 +498,7 @@ private fun FeaturedHero(
     val white = colorResource(CoreR.color.roamio_white)
     val forest = colorResource(CoreR.color.roamio_forest)
     val sage = colorResource(CoreR.color.roamio_sage)
-    var heroReady by remember(place.photoUrl ?: place.osmId) { mutableStateOf(false) }
-    LaunchedEffect(place.photoUrl ?: place.osmId) {
-        heroReady = false
-    }
+    var heroReady by remember(place.photoUrl, place.osmId, place.city) { mutableStateOf(false) }
     BoxWithConstraints(modifier = modifier.clip(CircleShape)) {
         val density = LocalDensity.current
         val centerPx = with(density) {
@@ -510,7 +507,7 @@ private fun FeaturedHero(
         val edgeRadius = with(density) {
             maxOf(maxWidth, maxHeight).toPx() * 0.56f
         }
-        key(place.photoUrl ?: place.osmId) {
+        key(place.photoUrl, place.osmId, place.city) {
             val heroPhoto = place.photoUrl?.takeIf { it.isNotBlank() }
             if (heroPhoto != null) {
                 LoadingAsyncImage(

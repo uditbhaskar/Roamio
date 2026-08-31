@@ -223,7 +223,7 @@ class HomeViewModel(
         exploreSession.activity = ActivityKind.PLACE
         val placeholder = location?.let {
             ExplorePlace(
-                osmId = 0L,
+                osmId = GeoUtils.fallbackOsmId(city, it.latitude, it.longitude),
                 osmType = "seed",
                 name = city,
                 latitude = it.latitude,

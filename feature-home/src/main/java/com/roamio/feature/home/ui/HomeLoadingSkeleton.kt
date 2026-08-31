@@ -160,7 +160,7 @@ fun HomeLoadingSkeleton(
         }
         Spacer(modifier = Modifier.height(10.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-            items(5) {
+            items(4) {
                 ShimmerBox(
                     modifier = Modifier
                         .width(92.dp)
