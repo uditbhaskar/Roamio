@@ -2,6 +2,7 @@ package com.roamio.feature.home.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.roamio.core.location.GeoLocation
 import com.roamio.core.constants.CoreConstants
 import com.roamio.core.places.ActivityKind
 import com.roamio.core.places.ExplorePlace
@@ -21,6 +22,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * ViewModel for the Home discovery screen.
@@ -129,7 +131,6 @@ class HomeViewModel(
         if (!hasPresentedContent) {
             homeWarmup.peekSnapshot()?.let { data ->
                 applySnapshot(data, exploreSession.activity)
-                return
             }
         }
         applySessionIfNeeded()
@@ -147,6 +148,8 @@ class HomeViewModel(
                     countryCode = override.countryCode,
                     countryName = GeoUtils.countryName(override.countryCode)
                         .ifBlank { override.placeName.substringAfter(',', "") },
+                    location = override,
+                    photoUrl = photoUrl,
                 )
                 needsReload = true
             }
@@ -212,25 +215,41 @@ class HomeViewModel(
         city: String,
         countryCode: String,
         countryName: String,
+        location: GeoLocation? = null,
+        photoUrl: String? = null,
     ) {
         featuredByActivity.clear()
         cachedCity = city
         exploreSession.activity = ActivityKind.PLACE
+        val placeholder = location?.let {
+            ExplorePlace(
+                osmId = 0L,
+                osmType = "seed",
+                name = city,
+                latitude = it.latitude,
+                longitude = it.longitude,
+                activity = ActivityKind.PLACE,
+                photoUrl = photoUrl?.takeIf { url -> url.isNotBlank() },
+                countryCode = countryCode,
+                countryName = countryName,
+                city = city,
+            )
+        }
         _uiState.value = _uiState.value.copy(
             isSearchOpen = false,
             searchQuery = "",
             searchResults = emptyList(),
-            isLoading = true,
-            isRefreshing = false,
+            isLoading = placeholder == null,
+            isRefreshing = placeholder != null,
             errorMessage = null,
             selectedActivity = ActivityKind.PLACE,
             loadedActivities = emptySet(),
-            headlineCity = "",
+            headlineCity = city,
             countryCode = countryCode,
             countryName = countryName,
             temperature = null,
             weatherCode = null,
-            featured = null,
+            featured = placeholder,
         )
     }
 
@@ -314,7 +333,7 @@ class HomeViewModel(
             return
         }
         searchJob = viewModelScope.launch {
-            delay(350)
+            delay(350.milliseconds)
             when (val result = homeRepository.search(query)) {
                 is AppResult.Success -> _uiState.value = _uiState.value.copy(
                     searchResults = result.data,
@@ -333,8 +352,8 @@ class HomeViewModel(
             return
         }
         when (activity) {
+            ActivityKind.POPULAR -> Unit
             ActivityKind.CAFE -> openCafeDetail()
-            ActivityKind.POPULAR,
             ActivityKind.HIKING,
             ActivityKind.KAYAKING,
             ActivityKind.BIKING,

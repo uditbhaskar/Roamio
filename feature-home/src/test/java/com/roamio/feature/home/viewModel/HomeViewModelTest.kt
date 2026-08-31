@@ -10,6 +10,7 @@ import com.roamio.core.preferences.AppPreferences
 import com.roamio.core.result.AppResult
 import com.roamio.feature.home.data.HomeRepository
 import com.roamio.feature.home.data.HomeSnapshot
+import com.roamio.feature.home.data.HomeWarmup
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
@@ -236,6 +237,34 @@ class HomeViewModelTest {
         io.mockk.coVerify(exactly = 1) { repository.load(any()) }
         assertEquals("Hampstead Heath", viewModel.uiState.value.featured?.name)
         assertFalse(viewModel.uiState.value.isLoading)
+    }
+
+    /**
+     * Verifies a Popular city keeps the card photo visible while Home reloads.
+     *
+     * @author udit
+     */
+    @Test
+    fun becameVisible_fromPopular_showsPlaceholderHero() = runTest {
+        coEvery { repository.load(any()) } coAnswers { kotlinx.coroutines.awaitCancellation() }
+        val warmup = mockk<HomeWarmup>(relaxed = true)
+        io.mockk.every { warmup.peekSnapshot() } returns null
+        val session = ExploreSession()
+        session.setOverride(
+            location = GeoLocation(
+                latitude = 60.39,
+                longitude = 5.32,
+                placeName = "Bergen",
+                countryCode = "NO",
+            ),
+            photoUrl = "https://example.com/bergen.jpg",
+        )
+        viewModel = HomeViewModel(repository, warmup, store, session, preferences)
+        viewModel.handleAction(HomeAction.BecameVisible)
+        val state = viewModel.uiState.value
+        assertEquals("Bergen", state.headlineCity)
+        assertFalse(state.isLoading)
+        assertEquals("https://example.com/bergen.jpg", state.featured?.photoUrl)
     }
 
     /**
