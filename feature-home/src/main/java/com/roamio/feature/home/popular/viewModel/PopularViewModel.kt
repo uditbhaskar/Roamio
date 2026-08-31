@@ -57,7 +57,6 @@ class PopularViewModel(
             }
             is PopularAction.OpenCity -> {
                 popularRepository.openCity(action.city, action.photoUrl)
-                _openHome.value = true
             }
         }
     }

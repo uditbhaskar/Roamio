@@ -1,5 +1,10 @@
 package com.roamio.ui.explore
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -53,16 +58,25 @@ fun ExploreShell(
 ) {
     var tab by rememberSaveable { mutableIntStateOf(0) }
     Box(modifier = Modifier.fillMaxSize()) {
-        when (tab) {
-            0 -> HomeScreenRoot(onOpenPlace = onOpenPlace)
-            1 -> PopularScreenRoot(
-                onOpenHome = { tab = 0 },
-                onOpenSaved = { tab = 2 },
-                onOpenSettings = { tab = 4 },
-            )
-            2 -> SavedScreenRoot(onOpenPlace = onOpenPlace)
-            3 -> CurrencyScreenRoot()
-            else -> SettingsScreenRoot()
+        AnimatedContent(
+            targetState = tab,
+            modifier = Modifier.fillMaxSize(),
+            transitionSpec = {
+                fadeIn(animationSpec = tween(220)) togetherWith fadeOut(animationSpec = tween(180))
+            },
+            label = "explore_tab",
+        ) { selected ->
+            when (selected) {
+                0 -> HomeScreenRoot(onOpenPlace = onOpenPlace)
+                1 -> PopularScreenRoot(
+                    onOpenHome = { tab = 0 },
+                    onOpenSaved = { tab = 2 },
+                    onOpenSettings = { tab = 4 },
+                )
+                2 -> SavedScreenRoot(onOpenPlace = onOpenPlace)
+                3 -> CurrencyScreenRoot()
+                else -> SettingsScreenRoot()
+            }
         }
         ForestDock(
             selected = tab,

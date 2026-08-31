@@ -29,7 +29,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.DirectionsBike
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Cloud
-import androidx.compose.material.icons.filled.GridView
 import androidx.compose.material.icons.filled.Kayaking
 import androidx.compose.material.icons.filled.LocalCafe
 import androidx.compose.material.icons.filled.Search
@@ -393,7 +392,7 @@ private fun SearchPill(onClick: () -> Unit) {
 }
 
 /**
- * Popular, Cafe, Hiking, Kayaking, and Biking chips. Available chips lead; unavailable ones are greyed out at the end.
+ * Cafe, Hiking, Kayaking, and Biking chips. Available chips lead; unavailable ones are greyed out at the end.
  *
  * @param selected Currently active activity filter on Home.
  * @param loadedActivities Chips that resolved live data for the current city.
@@ -407,7 +406,6 @@ private fun ActivityChips(
     onSelect: (ActivityKind) -> Unit,
 ) {
     val items = listOf(
-        Triple(ActivityKind.POPULAR, R.string.home_activity_popular, Icons.Filled.GridView),
         Triple(ActivityKind.CAFE, R.string.home_activity_cafe, Icons.Filled.LocalCafe),
         Triple(ActivityKind.HIKING, R.string.home_activity_hiking, Icons.Filled.Terrain),
         Triple(ActivityKind.KAYAKING, R.string.home_activity_kayaking, Icons.Filled.Kayaking),
@@ -419,10 +417,7 @@ private fun ActivityChips(
     LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
         items(ordered, key = { it.first }) { item ->
             val enabled = item.first in loadedActivities
-            val isSelected = enabled && item.first == selected && item.first !in setOf(
-                ActivityKind.CAFE,
-                ActivityKind.POPULAR,
-            )
+            val isSelected = enabled && item.first == selected && item.first != ActivityKind.CAFE
             ActivityChip(
                 label = stringResource(item.second),
                 icon = item.third,

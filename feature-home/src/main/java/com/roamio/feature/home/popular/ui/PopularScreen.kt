@@ -25,12 +25,9 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.DirectionsBike
-import androidx.compose.material.icons.filled.Kayaking
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.NearMe
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.filled.Terrain
 import androidx.compose.material.icons.outlined.NearMe
 import androidx.compose.material.icons.outlined.WbSunny
 import androidx.compose.material3.CircularProgressIndicator
@@ -53,8 +50,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.zIndex
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.PlatformTextStyle
@@ -65,26 +60,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
 import com.roamio.core.photo.PhotoUrls
-import com.roamio.core.R as CoreR
 import com.roamio.core.places.ActivityKind
 import com.roamio.core.places.SeedCities
 import com.roamio.core.places.SeedCity
 import com.roamio.core.util.GeoUtils
 import com.roamio.feature.home.R
-import com.roamio.feature.home.ui.LoadingAsyncImage
 import com.roamio.feature.home.popular.data.PopularCityCard
 import com.roamio.feature.home.popular.viewModel.PopularAction
 import com.roamio.feature.home.popular.viewModel.PopularFilter
 import com.roamio.feature.home.popular.viewModel.PopularUiState
 import com.roamio.feature.home.popular.viewModel.PopularViewModel
+import com.roamio.feature.home.ui.LoadingAsyncImage
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import kotlin.math.abs
 import kotlin.math.roundToInt
+import com.roamio.core.R as CoreR
 
 private const val DECK_VISIBLE = 3
 private const val DECK_SWIPE_FRACTION = 0.22f
@@ -568,7 +562,15 @@ fun PopularScreenRoot(
         if (openSettings) onOpenSettings()
         if (openHome || openSaved || openSettings) viewModel.resetNavigation()
     }
-    PopularScreenContent(state = uiState, onAction = viewModel::handleAction)
+    PopularScreenContent(
+        state = uiState,
+        onAction = { action ->
+            viewModel.handleAction(action)
+            if (action is PopularAction.OpenCity) {
+                onOpenHome()
+            }
+        },
+    )
 }
 
 private fun previewCard(name: String, code: String): PopularCityCard {

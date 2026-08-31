@@ -17,7 +17,6 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -76,15 +75,14 @@ class PopularViewModelTest {
     }
 
     /**
-     * Verifies opening a city asks the shell to return Home.
+     * Verifies opening a city recenters the shared explore session.
      *
      * @author udit
      */
     @Test
-    fun openCity_requestsHome() = runTest {
-        viewModel.handleAction(PopularAction.OpenCity(bergen, PopularFilter.NEARBY, null))
-        verify { repository.openCity(bergen, null) }
-        assertTrue(viewModel.openHome.value)
+    fun openCity_recentersSession() = runTest {
+        viewModel.handleAction(PopularAction.OpenCity(bergen, PopularFilter.NEARBY, "https://example.com/bergen.jpg"))
+        verify { repository.openCity(bergen, "https://example.com/bergen.jpg") }
     }
 
     /**
