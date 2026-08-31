@@ -16,7 +16,6 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(
@@ -40,17 +39,6 @@ class AppPreferences(
     private val currencyKey = stringPreferencesKey(CoreConstants.Preferences.KEY_HOME_CURRENCY)
     private val json = Json { ignoreUnknownKeys = true }
     private val savedListSerializer = ListSerializer(SavedPlaceRecord.serializer())
-
-    val isOnboardingCompleted: Flow<Boolean> = context.dataStore.data.map { prefs ->
-        prefs[onboardingKey] ?: false
-    }
-
-    /**
-     * Whether onboarding has been completed at least once.
-     *
-     * @author udit
-     */
-    suspend fun hasCompletedOnboarding(): Boolean = isOnboardingCompleted.first()
 
     val displayName: Flow<String> = context.dataStore.data.map { prefs ->
         prefs[nameKey].orEmpty()

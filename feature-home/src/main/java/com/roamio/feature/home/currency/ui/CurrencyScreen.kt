@@ -1,5 +1,6 @@
 package com.roamio.feature.home.currency.ui
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,6 +36,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.roamio.core.R as CoreR
 import com.roamio.core.constants.CoreConstants
 import com.roamio.feature.home.R
+import com.roamio.feature.home.ui.motion.RoamioMotion
 import com.roamio.feature.home.currency.viewModel.CurrencyAction
 import com.roamio.feature.home.currency.viewModel.CurrencyUiState
 import com.roamio.feature.home.currency.viewModel.CurrencyViewModel
@@ -124,33 +126,41 @@ fun CurrencyScreenContent(
                 .padding(horizontal = 24.dp, vertical = 12.dp),
         )
         Spacer(modifier = Modifier.height(20.dp))
-        when {
-            state.isLoading -> CircularProgressIndicator(color = forest, strokeWidth = 2.dp)
-            state.errorMessage != null -> {
-                Text(text = state.errorMessage, color = forest, fontFamily = ExploreFont)
-                Text(
-                    text = stringResource(R.string.currency_retry),
-                    color = forest,
-                    modifier = Modifier.clickable { onAction(CurrencyAction.Retry) },
-                )
-            }
-            state.result != null -> {
-                Text(
-                    text = stringResource(
-                        R.string.currency_result,
-                        String.format(Locale.US, "%.2f", state.result),
-                        state.toCode,
-                    ),
-                    color = forest,
-                    fontFamily = ExploreFont,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 28.sp,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(22.dp))
-                        .background(cream)
-                        .padding(18.dp)
-                        .fillMaxWidth(),
-                )
+        AnimatedContent(
+            targetState = Triple(state.isLoading, state.errorMessage, state.result),
+            transitionSpec = { RoamioMotion.crossfade() },
+            label = "currency_result",
+        ) { (loading, error, result) ->
+            when {
+                loading -> CircularProgressIndicator(color = forest, strokeWidth = 2.dp)
+                error != null -> {
+                    Column {
+                        Text(text = error, color = forest, fontFamily = ExploreFont)
+                        Text(
+                            text = stringResource(R.string.currency_retry),
+                            color = forest,
+                            modifier = Modifier.clickable { onAction(CurrencyAction.Retry) },
+                        )
+                    }
+                }
+                result != null -> {
+                    Text(
+                        text = stringResource(
+                            R.string.currency_result,
+                            String.format(Locale.US, "%.2f", result),
+                            state.toCode,
+                        ),
+                        color = forest,
+                        fontFamily = ExploreFont,
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 28.sp,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(22.dp))
+                            .background(cream)
+                            .padding(18.dp)
+                            .fillMaxWidth(),
+                    )
+                }
             }
         }
     }

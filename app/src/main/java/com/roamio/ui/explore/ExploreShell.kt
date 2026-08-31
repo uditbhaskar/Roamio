@@ -1,21 +1,26 @@
 package com.roamio.ui.explore
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -28,15 +33,19 @@ import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.roamio.R
 import com.roamio.core.R as CoreR
@@ -45,9 +54,12 @@ import com.roamio.feature.home.popular.ui.PopularScreenRoot
 import com.roamio.feature.home.saved.ui.SavedScreenRoot
 import com.roamio.feature.home.settings.ui.SettingsScreenRoot
 import com.roamio.feature.home.ui.HomeScreenRoot
+import com.roamio.feature.home.ui.motion.RoamioMotion
+
+private val DockShape = RoundedCornerShape(32.dp)
 
 /**
- * Main tab host with the floating forest dock from the mock.
+ * Main tab host with the floating glass dock from the mock.
  *
  * @param onOpenPlace Opens the place detail route.
  * @author udit
@@ -62,7 +74,7 @@ fun ExploreShell(
             targetState = tab,
             modifier = Modifier.fillMaxSize(),
             transitionSpec = {
-                fadeIn(animationSpec = tween(220)) togetherWith fadeOut(animationSpec = tween(180))
+                RoamioMotion.tabSlide(forward = targetState > initialState)
             },
             label = "explore_tab",
         ) { selected ->
@@ -78,7 +90,7 @@ fun ExploreShell(
                 else -> SettingsScreenRoot()
             }
         }
-        ForestDock(
+        GlassDock(
             selected = tab,
             onSelect = { tab = it },
             modifier = Modifier.align(Alignment.BottomCenter),
@@ -87,7 +99,7 @@ fun ExploreShell(
 }
 
 /**
- * Floating forest-green dock that switches the five explore tabs.
+ * Frosted iOS-style dock that switches the five explore tabs.
  *
  * @param selected Index of the active tab.
  * @param onSelect Called with the tapped tab index.
@@ -95,14 +107,16 @@ fun ExploreShell(
  * @author udit
  */
 @Composable
-private fun ForestDock(
+private fun GlassDock(
     selected: Int,
     onSelect: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val forest = colorResource(CoreR.color.roamio_forest)
-    val mint = colorResource(CoreR.color.roamio_mint)
     val muted = colorResource(CoreR.color.roamio_muted)
+    val glassFill = Color.White.copy(alpha = 0.78f)
+    val glassBorder = Color.White.copy(alpha = 0.52f)
+    val glassHighlight = forest.copy(alpha = 0.1f)
     val items = listOf(
         DockItem(Icons.Filled.Home, stringResource(R.string.dock_home)),
         DockItem(Icons.Filled.GridView, stringResource(R.string.dock_popular)),
@@ -110,36 +124,107 @@ private fun ForestDock(
         DockItem(Icons.Filled.CurrencyExchange, stringResource(R.string.dock_convert)),
         DockItem(Icons.Filled.Person, stringResource(R.string.dock_settings)),
     )
-    Row(
+    BoxWithConstraints(
         modifier = modifier
             .navigationBarsPadding()
             .padding(start = 28.dp, end = 28.dp, bottom = 12.dp)
             .fillMaxWidth()
-            .height(64.dp)
-            .shadow(16.dp, RoundedCornerShape(32.dp), clip = false)
-            .clip(RoundedCornerShape(32.dp))
-            .background(forest)
-            .padding(horizontal = 10.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically,
+            .height(64.dp),
     ) {
-        items.forEachIndexed { index, item ->
-            val active = index == selected
+        val slotWidth = maxWidth / items.size
+        val indicatorOffset by animateDpAsState(
+            targetValue = slotWidth * selected,
+            animationSpec = RoamioMotion.bouncySpringDp,
+            label = "dock_indicator_offset",
+        )
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .shadow(
+                    elevation = 18.dp,
+                    shape = DockShape,
+                    clip = false,
+                    ambientColor = forest.copy(alpha = 0.14f),
+                    spotColor = forest.copy(alpha = 0.2f),
+                )
+                .clip(DockShape)
+                .background(glassFill)
+                .border(width = 1.dp, color = glassBorder, shape = DockShape),
+        ) {
             Box(
                 modifier = Modifier
-                    .size(44.dp)
+                    .offset { IntOffset(indicatorOffset.roundToPx(), 0) }
+                    .width(slotWidth)
+                    .fillMaxHeight()
+                    .padding(horizontal = 7.dp, vertical = 6.dp)
                     .clip(CircleShape)
-                    .clickable { onSelect(index) },
-                contentAlignment = Alignment.Center,
+                    .background(glassHighlight)
+                    .border(
+                        width = 0.5.dp,
+                        color = Color.White.copy(alpha = 0.65f),
+                        shape = CircleShape,
+                    ),
+            )
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    imageVector = item.icon,
-                    contentDescription = item.label,
-                    tint = if (active) mint else muted,
-                    modifier = Modifier.size(22.dp),
-                )
+                items.forEachIndexed { index, item ->
+                    DockTab(
+                        item = item,
+                        selected = index == selected,
+                        activeTint = forest,
+                        inactiveTint = muted,
+                        onClick = { onSelect(index) },
+                        modifier = Modifier.width(slotWidth),
+                    )
+                }
             }
         }
+    }
+}
+
+@Composable
+private fun DockTab(
+    item: DockItem,
+    selected: Boolean,
+    activeTint: Color,
+    inactiveTint: Color,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val iconTint by animateColorAsState(
+        targetValue = when {
+            selected -> activeTint
+            else -> inactiveTint
+        },
+        animationSpec = RoamioMotion.chipTween,
+        label = "dock_icon_tint",
+    )
+    val iconScale by animateFloatAsState(
+        targetValue = if (selected) 1.18f else 1f,
+        animationSpec = RoamioMotion.bouncySpring,
+        label = "dock_icon_scale",
+    )
+    Box(
+        modifier = modifier
+            .fillMaxHeight()
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onClick,
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Icon(
+            imageVector = item.icon,
+            contentDescription = item.label,
+            tint = iconTint,
+            modifier = Modifier
+                .scale(iconScale)
+                .size(22.dp),
+        )
     }
 }
 

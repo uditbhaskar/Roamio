@@ -62,6 +62,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import com.roamio.core.R as CoreR
 import com.roamio.feature.onboarding.R
 import com.roamio.feature.onboarding.viewModel.OnboardingAction
 import com.roamio.feature.onboarding.viewModel.OnboardingUiState
@@ -111,9 +112,9 @@ private fun OnboardingExplorePage(
     onGetStarted: () -> Unit,
     onPrivacyClick: () -> Unit,
 ) {
-    val teal = colorResource(R.color.onboarding_explore_teal)
+    val sage = colorResource(CoreR.color.roamio_sage)
+    val forest = colorResource(CoreR.color.roamio_forest)
     val ink = colorResource(R.color.onboarding_explore_ink)
-    val onTeal = colorResource(R.color.onboarding_explore_on_teal)
     val privacy = colorResource(R.color.onboarding_explore_privacy)
     Box(modifier = Modifier.fillMaxSize()) {
         Image(
@@ -157,8 +158,8 @@ private fun OnboardingExplorePage(
                     .height(56.dp),
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = teal,
-                    contentColor = onTeal,
+                    containerColor = sage,
+                    contentColor = forest,
                 ),
             ) {
                 Text(

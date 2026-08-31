@@ -44,42 +44,6 @@ private fun shimmerHighlightColor(): Color {
 }
 
 /**
- * Animated brush used for skeleton placeholders across Home and cards.
- *
- * @param baseColor Resting skeleton tone.
- * @param highlightColor Sweep highlight tone.
- * @return Linear gradient that moves on each frame.
- * @author udit
- */
-@Composable
-fun rememberShimmerBrush(
-    baseColor: Color,
-    highlightColor: Color,
-): Brush {
-    val transition = rememberInfiniteTransition(label = "shimmer")
-    val progress by transition.animateFloat(
-        initialValue = 0f,
-        targetValue = 1f,
-        animationSpec = infiniteRepeatable(
-            animation = tween(SHIMMER_DURATION_MS, easing = LinearEasing),
-            repeatMode = RepeatMode.Restart,
-        ),
-        label = "shimmer_progress",
-    )
-    return Brush.linearGradient(
-        colorStops = arrayOf(
-            0f to baseColor,
-            0.38f to baseColor,
-            0.5f to highlightColor,
-            0.62f to baseColor,
-            1f to baseColor,
-        ),
-        start = Offset(progress * 800f - 400f, 0f),
-        end = Offset(progress * 800f, 0f),
-    )
-}
-
-/**
  * Box filled with a size-aware animated shimmer sweep.
  *
  * @param modifier Layout and shape for the placeholder.

@@ -3,6 +3,9 @@ package com.roamio.feature.home.ui
 import android.Manifest
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -76,14 +79,14 @@ import com.roamio.core.places.ExplorePlace
 import com.roamio.core.places.SearchHit
 import com.roamio.core.util.GeoUtils
 import com.roamio.feature.home.R
+import com.roamio.feature.home.ui.motion.RoamioMotion
+import com.roamio.feature.home.ui.motion.rememberBouncyPressScale
 import com.roamio.feature.home.viewModel.HomeAction
 import com.roamio.feature.home.viewModel.HomeUiState
 import com.roamio.feature.home.viewModel.HomeViewModel
 import org.koin.androidx.compose.koinViewModel
 import kotlin.math.roundToInt
 import com.roamio.core.R as CoreR
-
-private const val CHIP_TO_HERO_SPACING_DP = HOME_CHIP_TO_HERO_SPACING_DP
 
 private val ExploreFont = FontFamily(
     Font(CoreR.font.poppins_regular, FontWeight.Normal),
@@ -124,19 +127,30 @@ fun HomeScreenContent(
                 .statusBarsPadding()
                 .padding(start = 22.dp, end = 22.dp, top = 8.dp, bottom = 100.dp),
         ) {
-            if (state.showsFullSkeleton) {
-                HomeLoadingSkeleton(modifier = Modifier.fillMaxSize())
-            } else {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    HomeLoadedContent(
-                        state = state,
-                        ink = ink,
-                        onAction = onAction,
-                    )
+            AnimatedContent(
+                targetState = state.showsFullSkeleton,
+                modifier = Modifier.fillMaxSize(),
+                transitionSpec = { RoamioMotion.crossfade() },
+                label = "home_load",
+            ) { skeleton ->
+                if (skeleton) {
+                    HomeLoadingSkeleton(modifier = Modifier.fillMaxSize())
+                } else {
+                    Column(modifier = Modifier.fillMaxSize()) {
+                        HomeLoadedContent(
+                            state = state,
+                            ink = ink,
+                            onAction = onAction,
+                        )
+                    }
                 }
             }
         }
-        if (state.isSearchOpen) {
+        AnimatedVisibility(
+            visible = state.isSearchOpen,
+            enter = RoamioMotion.overlayEnterTransition(),
+            exit = RoamioMotion.overlayExitTransition(),
+        ) {
             SearchOverlay(
                 query = state.searchQuery,
                 results = state.searchResults,
@@ -238,7 +252,7 @@ private fun ColumnScope.HomeLoadedContent(
         loadedActivities = state.loadedActivities,
         onSelect = { onAction(HomeAction.SelectActivity(it)) },
     )
-    Spacer(modifier = Modifier.height(CHIP_TO_HERO_SPACING_DP.dp))
+    Spacer(modifier = Modifier.height(HOME_CHIP_TO_HERO_SPACING_DP.dp))
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxWidth()
@@ -450,16 +464,25 @@ private fun ActivityChip(
     val forest = colorResource(CoreR.color.roamio_forest)
     val chip = colorResource(CoreR.color.roamio_chip)
     val muted = colorResource(CoreR.color.roamio_muted)
-    val bg = when {
-        !enabled -> chip.copy(alpha = 0.45f)
-        selected -> forest
-        else -> chip
-    }
-    val fg = when {
-        !enabled -> muted
-        selected -> colorResource(CoreR.color.roamio_white)
-        else -> forest
-    }
+    val white = colorResource(CoreR.color.roamio_white)
+    val bg by animateColorAsState(
+        targetValue = when {
+            !enabled -> chip.copy(alpha = 0.45f)
+            selected -> forest
+            else -> chip
+        },
+        animationSpec = RoamioMotion.chipTween,
+        label = "chip_bg",
+    )
+    val fg by animateColorAsState(
+        targetValue = when {
+            !enabled -> muted
+            selected -> white
+            else -> forest
+        },
+        animationSpec = RoamioMotion.chipTween,
+        label = "chip_fg",
+    )
     Row(
         modifier = Modifier
             .shadow(if (selected && enabled) 0.dp else 4.dp, RoundedCornerShape(22.dp), clip = false)
@@ -496,7 +519,6 @@ private fun FeaturedHero(
     modifier: Modifier = Modifier,
 ) {
     val white = colorResource(CoreR.color.roamio_white)
-    val forest = colorResource(CoreR.color.roamio_forest)
     val sage = colorResource(CoreR.color.roamio_sage)
     var heroReady by remember(place.photoUrl, place.osmId, place.city) { mutableStateOf(false) }
     BoxWithConstraints(modifier = modifier.clip(CircleShape)) {
@@ -515,7 +537,6 @@ private fun FeaturedHero(
                     contentDescription = stringResource(R.string.home_cd_featured),
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.Crop,
-                    placeholderColor = forest,
                     onLoadedChange = { heroReady = it },
                 )
             } else {
@@ -535,88 +556,98 @@ private fun FeaturedHero(
                     ),
                 ),
         )
-        if (heroReady) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        Brush.verticalGradient(
-                            0f to Color.Transparent,
-                            0.5f to Color.Transparent,
-                            1f to Color(0xCC041208),
+        AnimatedVisibility(
+            visible = heroReady,
+            enter = RoamioMotion.revealUpTransition(),
+        ) {
+            Box(modifier = Modifier.fillMaxSize()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(
+                            Brush.verticalGradient(
+                                0f to Color.Transparent,
+                                0.5f to Color.Transparent,
+                                1f to Color(0xCC041208),
+                            ),
                         ),
-                    ),
-            )
-            Column(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .fillMaxWidth()
-                    .padding(horizontal = 40.dp, vertical = 32.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = place.name,
-                    color = white,
-                    fontFamily = ExploreFont,
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 24.sp,
-                    lineHeight = 28.sp,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center,
                 )
-                if (place.blurb.isNotBlank()) {
-                    Spacer(modifier = Modifier.height(8.dp))
+                val (startTripInteraction, startTripScale) = rememberBouncyPressScale()
+                Column(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .fillMaxWidth()
+                        .padding(horizontal = 40.dp, vertical = 32.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                ) {
                     Text(
-                        text = place.blurb,
-                        color = white.copy(alpha = 0.92f),
+                        text = place.name,
+                        color = white,
                         fontFamily = ExploreFont,
-                        fontWeight = FontWeight.Normal,
-                        fontSize = 13.sp,
-                        lineHeight = 18.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        fontSize = 24.sp,
+                        lineHeight = 28.sp,
                         maxLines = 2,
                         overflow = TextOverflow.Ellipsis,
                         textAlign = TextAlign.Center,
                     )
-                }
-                val distance = place.distanceKm
-                if (distance != null || place.isOpenHours) {
-                    Spacer(modifier = Modifier.height(12.dp))
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(18.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        if (place.isOpenHours) {
-                            MetaItem(
-                                icon = Icons.Outlined.Schedule,
-                                text = stringResource(R.string.home_meta_open),
-                            )
-                        }
-                        if (distance != null) {
-                            MetaItem(
-                                icon = Icons.Outlined.NearMe,
-                                text = stringResource(R.string.home_distance_km, GeoUtils.formatKm(distance)),
-                            )
+                    if (place.blurb.isNotBlank()) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = place.blurb,
+                            color = white.copy(alpha = 0.92f),
+                            fontFamily = ExploreFont,
+                            fontWeight = FontWeight.Normal,
+                            fontSize = 13.sp,
+                            lineHeight = 18.sp,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            textAlign = TextAlign.Center,
+                        )
+                    }
+                    val distance = place.distanceKm
+                    if (distance != null || place.isOpenHours) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                        Row(
+                            horizontalArrangement = Arrangement.spacedBy(18.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            if (place.isOpenHours) {
+                                MetaItem(
+                                    icon = Icons.Outlined.Schedule,
+                                    text = stringResource(R.string.home_meta_open),
+                                )
+                            }
+                            if (distance != null) {
+                                MetaItem(
+                                    icon = Icons.Outlined.NearMe,
+                                    text = stringResource(R.string.home_distance_km, GeoUtils.formatKm(distance)),
+                                )
+                            }
                         }
                     }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(white.copy(alpha = 0.14f))
-                        .border(1.4.dp, white.copy(alpha = 0.92f), RoundedCornerShape(24.dp))
-                        .clickable(onClick = onStartTrip)
-                        .padding(horizontal = 26.dp, vertical = 11.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = stringResource(R.string.home_start_trip),
-                        color = white,
-                        fontFamily = ExploreFont,
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 14.sp,
-                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Row(
+                        modifier = startTripScale
+                            .clip(RoundedCornerShape(24.dp))
+                            .background(white.copy(alpha = 0.14f))
+                            .border(1.4.dp, white.copy(alpha = 0.92f), RoundedCornerShape(24.dp))
+                            .clickable(
+                                interactionSource = startTripInteraction,
+                                indication = null,
+                                onClick = onStartTrip,
+                            )
+                            .padding(horizontal = 26.dp, vertical = 11.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(R.string.home_start_trip),
+                            color = white,
+                            fontFamily = ExploreFont,
+                            fontWeight = FontWeight.Medium,
+                            fontSize = 14.sp,
+                        )
+                    }
                 }
             }
         }

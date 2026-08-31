@@ -1,5 +1,7 @@
 package com.roamio.feature.home.popular.ui
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
@@ -69,6 +71,7 @@ import com.roamio.core.places.SeedCity
 import com.roamio.core.util.GeoUtils
 import com.roamio.feature.home.R
 import com.roamio.feature.home.popular.data.PopularCityCard
+import com.roamio.feature.home.ui.motion.RoamioMotion
 import com.roamio.feature.home.popular.viewModel.PopularAction
 import com.roamio.feature.home.popular.viewModel.PopularFilter
 import com.roamio.feature.home.popular.viewModel.PopularUiState
@@ -82,7 +85,7 @@ import com.roamio.core.R as CoreR
 
 private const val DECK_VISIBLE = 3
 private const val DECK_SWIPE_FRACTION = 0.22f
-private const val DECK_EXIT_MS = 260
+private const val DECK_EXIT_MS = RoamioMotion.OVERLAY_MS
 private const val DECK_ROTATION_DIVISOR = 48f
 
 private val ExploreFont = FontFamily(
@@ -151,44 +154,49 @@ fun PopularScreenContent(
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
-        when {
-            state.isLoading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                    contentAlignment = Alignment.Center,
-                ) {
-                    CircularProgressIndicator(color = forest, strokeWidth = 2.dp)
-                }
-            }
-            state.errorMessage != null && visible.isEmpty() -> {
-                Column {
-                    Text(text = state.errorMessage, color = forest, fontFamily = ExploreFont)
-                    TextButton(onClick = { onAction(PopularAction.Retry) }) {
-                        Text(text = stringResource(R.string.popular_retry), color = forest)
+        AnimatedContent(
+            targetState = state.isLoading,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f),
+            transitionSpec = { RoamioMotion.crossfade() },
+            label = "popular_load",
+        ) { loading ->
+            when {
+                loading -> {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center,
+                    ) {
+                        CircularProgressIndicator(color = forest, strokeWidth = 2.dp)
                     }
                 }
-            }
-            visible.isEmpty() -> {
-                Text(
-                    text = stringResource(R.string.popular_empty),
-                    color = forest,
-                    fontFamily = ExploreFont,
-                )
-            }
-            else -> {
-                CityDeck(
-                    cards = state.deckCities,
-                    pageCount = visible.size,
-                    onOpen = { card ->
-                        onAction(PopularAction.OpenCity(card.city, state.filter, card.photoUrl))
-                    },
-                    onAdvance = { onAction(PopularAction.AdvanceDeck) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(1f),
-                )
+                state.errorMessage != null && visible.isEmpty() -> {
+                    Column {
+                        Text(text = state.errorMessage, color = forest, fontFamily = ExploreFont)
+                        TextButton(onClick = { onAction(PopularAction.Retry) }) {
+                            Text(text = stringResource(R.string.popular_retry), color = forest)
+                        }
+                    }
+                }
+                visible.isEmpty() -> {
+                    Text(
+                        text = stringResource(R.string.popular_empty),
+                        color = forest,
+                        fontFamily = ExploreFont,
+                    )
+                }
+                else -> {
+                    CityDeck(
+                        cards = state.deckCities,
+                        pageCount = visible.size,
+                        onOpen = { card ->
+                            onAction(PopularAction.OpenCity(card.city, state.filter, card.photoUrl))
+                        },
+                        onAdvance = { onAction(PopularAction.AdvanceDeck) },
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
             }
         }
     }
@@ -236,10 +244,21 @@ private fun FilterChip(
     forest: Color,
     chip: Color,
 ) {
+    val white = colorResource(CoreR.color.roamio_white)
+    val bg by animateColorAsState(
+        targetValue = if (selected) forest else chip,
+        animationSpec = RoamioMotion.chipTween,
+        label = "filter_bg",
+    )
+    val fg by animateColorAsState(
+        targetValue = if (selected) white else forest,
+        animationSpec = RoamioMotion.chipTween,
+        label = "filter_fg",
+    )
     Row(
         modifier = Modifier
             .clip(RoundedCornerShape(20.dp))
-            .background(if (selected) forest else chip)
+            .background(bg)
             .clickable(onClick = onClick)
             .padding(horizontal = 18.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
@@ -248,12 +267,12 @@ private fun FilterChip(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = if (selected) colorResource(CoreR.color.roamio_white) else forest,
+            tint = fg,
             modifier = Modifier.size(14.dp),
         )
         Text(
             text = label,
-            color = if (selected) colorResource(CoreR.color.roamio_white) else forest,
+            color = fg,
             fontFamily = ExploreFont,
             fontWeight = FontWeight.Medium,
             fontSize = 12.sp,
@@ -489,7 +508,6 @@ private fun DeckPhoto(
             contentDescription = contentDescription,
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
-            placeholderColor = forest,
         )
         Box(
             modifier = Modifier

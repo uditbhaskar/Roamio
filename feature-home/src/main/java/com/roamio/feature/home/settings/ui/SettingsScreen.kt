@@ -1,5 +1,6 @@
 package com.roamio.feature.home.settings.ui
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -34,6 +35,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.roamio.core.R as CoreR
 import com.roamio.core.constants.CoreConstants
 import com.roamio.feature.home.R
+import com.roamio.feature.home.ui.motion.RoamioMotion
 import com.roamio.feature.home.settings.viewModel.SettingsAction
 import com.roamio.feature.home.settings.viewModel.SettingsUiState
 import com.roamio.feature.home.settings.viewModel.SettingsViewModel
@@ -159,14 +161,24 @@ private fun UnitChip(
 ) {
     val forest = colorResource(CoreR.color.roamio_forest)
     val white = colorResource(CoreR.color.roamio_white)
+    val background by animateColorAsState(
+        targetValue = if (selected) forest else white,
+        animationSpec = RoamioMotion.chipTween,
+        label = "unit_chip_bg",
+    )
+    val foreground by animateColorAsState(
+        targetValue = if (selected) white else forest,
+        animationSpec = RoamioMotion.chipTween,
+        label = "unit_chip_fg",
+    )
     Text(
         text = label,
-        color = if (selected) white else forest,
+        color = foreground,
         fontFamily = ExploreFont,
         fontSize = 13.sp,
         modifier = Modifier
             .clip(RoundedCornerShape(16.dp))
-            .background(if (selected) forest else white)
+            .background(background)
             .clickable(onClick = onClick)
             .padding(horizontal = 12.dp, vertical = 8.dp),
     )

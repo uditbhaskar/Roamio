@@ -1,5 +1,6 @@
 package com.roamio.feature.home.place.ui
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -73,6 +74,7 @@ import com.roamio.core.util.GeoUtils
 import com.roamio.core.weather.CurrentWeather
 import com.roamio.core.constants.CoreConstants
 import com.roamio.feature.home.R
+import com.roamio.feature.home.ui.motion.RoamioMotion
 import com.roamio.feature.home.ui.LoadingAsyncImage
 import com.roamio.feature.home.ui.ShimmerBox
 import com.roamio.feature.home.place.viewModel.PlaceAction
@@ -104,6 +106,12 @@ private val TightHeadline = TextStyle(
     platformStyle = PlatformTextStyle(includeFontPadding = false),
 )
 
+private enum class PlacePhase {
+    Loading,
+    Error,
+    Loaded,
+}
+
 /**
  * Presentational place detail UI driven by state and actions.
  *
@@ -118,42 +126,52 @@ fun PlaceScreenContent(
 ) {
     val sage = colorResource(CoreR.color.roamio_sage)
     val forest = colorResource(CoreR.color.roamio_forest)
+    val phase = when {
+        state.isLoading && state.place == null -> PlacePhase.Loading
+        state.place == null -> PlacePhase.Error
+        else -> PlacePhase.Loaded
+    }
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(sage),
     ) {
-        when {
-            state.isLoading && state.place == null -> {
-                PlaceLoadingSkeleton(modifier = Modifier.fillMaxSize())
-            }
-            state.place == null -> {
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(24.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                ) {
-                    Text(
-                        text = state.errorMessage ?: stringResource(R.string.place_missing),
-                        color = forest,
-                        fontFamily = ExploreFont,
-                    )
-                    TextButton(onClick = { onAction(PlaceAction.Retry) }) {
-                        Text(text = stringResource(R.string.place_retry), color = forest)
-                    }
-                    TextButton(onClick = { onAction(PlaceAction.Back) }) {
-                        Text(text = stringResource(R.string.place_cd_back), color = forest)
+        AnimatedContent(
+            targetState = phase,
+            modifier = Modifier.fillMaxSize(),
+            transitionSpec = { RoamioMotion.crossfade() },
+            label = "place_phase",
+        ) { screen ->
+            when (screen) {
+                PlacePhase.Loading -> PlaceLoadingSkeleton(modifier = Modifier.fillMaxSize())
+                PlacePhase.Error -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(24.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                    ) {
+                        Text(
+                            text = state.errorMessage ?: stringResource(R.string.place_missing),
+                            color = forest,
+                            fontFamily = ExploreFont,
+                        )
+                        TextButton(onClick = { onAction(PlaceAction.Retry) }) {
+                            Text(text = stringResource(R.string.place_retry), color = forest)
+                        }
+                        TextButton(onClick = { onAction(PlaceAction.Back) }) {
+                            Text(text = stringResource(R.string.place_cd_back), color = forest)
+                        }
                     }
                 }
-            }
-            else -> {
-                PlaceLoaded(
-                    state = state,
-                    place = state.place,
-                    onAction = onAction,
-                )
+                PlacePhase.Loaded -> {
+                    PlaceLoaded(
+                        state = state,
+                        place = state.place!!,
+                        onAction = onAction,
+                    )
+                }
             }
         }
     }
@@ -192,7 +210,6 @@ private fun PlaceLoaded(
                             contentDescription = place.name,
                             modifier = Modifier.fillMaxSize(),
                             contentScale = ContentScale.Crop,
-                            placeholderColor = forest,
                         )
                     } else {
                         ShimmerBox(modifier = Modifier.fillMaxSize())
@@ -282,19 +299,24 @@ private fun PlaceLoaded(
                             style = TightHeadline.copy(textAlign = TextAlign.Start),
                             modifier = Modifier.fillMaxWidth(),
                         )
-                        if (state.isEnriching) {
-                            Spacer(modifier = Modifier.height(10.dp))
-                            PlaceBlurbShimmer(modifier = Modifier.fillMaxWidth())
-                        } else if (place.blurb.isNotBlank()) {
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Text(
-                                text = place.blurb,
-                                color = colorResource(CoreR.color.roamio_muted),
-                                fontFamily = ExploreFont,
-                                fontSize = 13.sp,
-                                lineHeight = 20.sp,
-                                modifier = Modifier.fillMaxWidth(),
-                            )
+                        Spacer(modifier = Modifier.height(10.dp))
+                        AnimatedContent(
+                            targetState = state.isEnriching,
+                            transitionSpec = { RoamioMotion.crossfade() },
+                            label = "place_blurb",
+                        ) { enriching ->
+                            if (enriching) {
+                                PlaceBlurbShimmer(modifier = Modifier.fillMaxWidth())
+                            } else if (place.blurb.isNotBlank()) {
+                                Text(
+                                    text = place.blurb,
+                                    color = colorResource(CoreR.color.roamio_muted),
+                                    fontFamily = ExploreFont,
+                                    fontSize = 13.sp,
+                                    lineHeight = 20.sp,
+                                    modifier = Modifier.fillMaxWidth(),
+                                )
+                            }
                         }
                         Spacer(modifier = Modifier.height(16.dp))
                         StatPills(place = place)

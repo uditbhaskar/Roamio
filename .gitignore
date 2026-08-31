@@ -79,7 +79,6 @@ node_modules/
 *.dex
 *.class
 *.jar
-!gradle/wrapper/gradle-wrapper.jar
 output.json
 outputs/
 app/release/
@@ -173,6 +172,9 @@ outputs/androidTest-results/
 
 # Local developer overrides
 *.local
+
+# Accidental macOS / tool caches under source trees
+**/src/Library/
 
 # Lint intermediate cache
 .lint/

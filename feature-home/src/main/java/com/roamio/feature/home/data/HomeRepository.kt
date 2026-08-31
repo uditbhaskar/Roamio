@@ -250,7 +250,7 @@ class HomeRepository(
         }
     }
 
-    private suspend fun resolvePopularLive(
+    private fun resolvePopularLive(
         city: String,
         location: GeoLocation,
     ): ExplorePlace? {
@@ -601,7 +601,6 @@ class HomeRepository(
  *
  * @param location Active search point.
  * @param weather Current conditions, when available.
- * @param featured Place shown on the Home circle.
  * @param loadedActivities Chips that resolved live data for the city.
  * @param cafePlace Nearby cafe when OpenStreetMap returned one.
  * @param displayName Greeting name from settings.
