@@ -184,7 +184,7 @@ private fun PlaceLoaded(
                     .height(heroHeight)
                     .align(Alignment.TopCenter),
             ) {
-                key(place.photoUrl ?: place.osmId) {
+                key(place.photoUrl, place.osmId, place.city) {
                     val heroPhoto = place.photoUrl?.takeIf { it.isNotBlank() }
                     if (heroPhoto != null) {
                         LoadingAsyncImage(
@@ -703,7 +703,7 @@ private fun PlaceScreenContentErrorPreview() {
         PlaceScreenContent(
             state = PlaceUiState(
                 isLoading = false,
-                errorMessage = com.roamio.core.constants.CoreConstants.Errors.NETWORK,
+                errorMessage = CoreConstants.Errors.NETWORK,
             ),
             onAction = {},
         )
