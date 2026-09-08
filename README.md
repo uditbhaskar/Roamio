@@ -1,4 +1,4 @@
-# Roamio – Smart Travel Companion
+# Roamio: Smart Travel Companion
 
 **Roamio** is a travel companion Android app for nearby places, weather, saved spots, and currency conversion. Built with Kotlin, Jetpack Compose, Koin, and Ktor.
 
